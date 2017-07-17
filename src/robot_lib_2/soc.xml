@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdtprojectproperties>
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.IncludePaths">
+<language name="C++ Source File">
+<includepath>C:\altera\15.1\embedded\ip\altera\hps\altera_hps\hwlib\include\soc_cv_av</includepath>
+<includepath>C:\altera\15.1\embedded\ip\altera\hps\altera_hps\hwlib\include</includepath>
+<includepath>C:\openLIB</includepath>
+
+</language>
+<language name="C Source File">
+<includepath>C:\altera\15.1\embedded\ip\altera\hps\altera_hps\hwlib\include\soc_cv_av</includepath>
+<includepath>C:\altera\15.1\embedded\ip\altera\hps\altera_hps\hwlib\include</includepath>
+<includepath>C:\openLIB</includepath>
+
+</language>
+<language name="s,sx,SX,ASM">
+
+</language>
+<language name="Assembly Source File">
+
+</language>
+<language name="Object File">
+
+</language>
+</section>
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.Macros">
+<language name="C++ Source File">
+<macro>
+<name>soc_cv_av</name><value>1</value>
+</macro>
+
+</language>
+<language name="C Source File">
+<macro>
+<name>soc_cv_av</name><value>1</value>
+</macro>
+
+</language>
+<language name="s,sx,SX,ASM">
+
+</language>
+<language name="Assembly Source File">
+
+</language>
+<language name="Object File">
+
+</language>
+</section>
+</cdtprojectproperties>

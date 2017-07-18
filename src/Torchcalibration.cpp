@@ -122,14 +122,6 @@ void Torchcalibration::implementGetTCFMatrix() {
 		TCFmatrix = getTCFMatrix(P1, P2, P3, P4, P5, P6);
 		// debug
 		cout << "get tcf:" << TCFmatrix << endl;
-//		double x = TCFmatrix[3];
-//		double y = TCFmatrix[7];
-//		double z = TCFmatrix[11];
-//		TCFmatrix <<    1, 0, 0,  x,
-//						0, 1, 0,  y,
-//						0, 0, 1,  z,
-//						0, 0, 0,  1;
-//		cout << "get tcf:" << TCFmatrix << endl;
 		// 需要修改   发送 TCF
 		ostringstream os;
 		string str = "E5,19";

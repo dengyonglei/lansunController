@@ -25,7 +25,7 @@ Element::Element()
     Index = 0;
     IsArcStric = false;
     IsQuench = false;
-   }
+}
 
 Element::~Element()
 {
@@ -59,33 +59,25 @@ bool Element::getArcInterpolations()
 
 }
 
-
 //验证插补点是否正确
 bool Element::checkInterpolations(list<MJCoint> abcdef)
 {
-	int i = 0;
-	list<MJCoint>::iterator iter = abcdef.begin();
-    if(!lastJIsinit)
-    {
-       lastJ = NewPositionJointssolution((*iter).m);
-	   lastJIsinit = true;
-    }
-	for (; iter != abcdef.end();iter++)
-	{
-		(*iter).j = NewPositionJointssolution((*iter).m,lastJ);
-		lastJ = (*iter).j;
-		i++;
-		if ((!(*iter).j.ISOK))
-		{
-			throw MobileTransfinite;  //抛出移动超限的异常
-			return false;
-		}
-		MJCPoint p;
-		p.mj = *iter;
-		p.index = i;
-		interpolationPointsIndexs.push_back(p);
-		}
-		return true;
+	    int i = 0;
+		for (list<MJCoint>::iterator iter = abcdef.begin(); iter != abcdef.end();iter++)
+			{
+					(*iter).j = NewPositionJointssolution((*iter).m);
+					i++;
+					if ((!(*iter).j.ISOK))
+					{
+						throw MobileTransfinite;  //抛出移动超限的异常
+						return false;
+					}
+					MJCPoint p;
+					p.mj = *iter;
+					p.index = i;
+			 interpolationPointsIndexs.push_back(p);
+			}
+			return true;
 }
 void Element::getMoveLineInterpolations()
 {
@@ -94,11 +86,6 @@ void Element::getMoveLineInterpolations()
 	startmj.c = startC;
 	endmj.j = NewPositionJointssolution(xyzrpw_2_pose(endXyzrpw)); //把最后一个点弄进去
 	endmj.c = endC;
-	 if(!lastJIsinit)
-	{
-	   lastJ = endmj.j;
-	   lastJIsinit = true;
-	}
 	MJCPoint p1,p2;
 	p1.mj = startmj;
 	p1.index = 1;

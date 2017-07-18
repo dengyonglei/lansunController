@@ -10,14 +10,13 @@
 #include <cstring>
 #include "DlyCommon.h"
 #include "Parameter.h"
-#include "robot_class/udp.h"
+
 extern string lastcmd;
 extern Parameter structParameter;
 Parser::Parser() :
 		sdata(""), back_finished(false), IsConnnect(true), runing(false), IsClear(
 				false), IsCutting(false) {
 	IsSend = false;
-	IsSendIOdata = false;
 }
 
 Parser::~Parser() {
@@ -135,38 +134,6 @@ else if (cmd == "E1")
 	IsConnnect = true;
 
 }
-else if (cmd == "EH")
-{
-	if(parserdata[1] == 0)
-	{
-		robotType = JointRobot;
-		version += " JointRobot";
-	}
-	else if(parserdata[1] == 1)
-	{
-		robotType = CoordRobot;
-		version += " CoordRobot";
-	}
-	if(udp::IsOpenUdp)
-	{
-		if(robotType == CoordRobot)
-		{
-		 TCFmatrix << 1, 0, 0,220,
-					0, 1, 0, -5,
-					0, 0, 1, -170,
-					0, 0, 0, 1;
-		}
-		else
-		{
-			POSITIONER <<  1, 0, 0, 700,
-						   0, 1, 0, -600,
-						   0, 0, 1, 0,
-						   0, 0, 0, 1;
-			dh =  233.924;
-		}
-
-		}
-}
 else if(cmd == "EB") {
 	PointType pointtype;
 	pointtype = PointType((int) parserdata[1]);
@@ -180,10 +147,8 @@ else if(cmd == "EB") {
 else if(cmd == "EC") {
 	int h = 1;
 	Matrix4d mat = Matrix4d::Zero();
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 4; j++)
-		{
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
 			double s = parserdata[h++];
 			if (finite(s) == 0)   //如果传入的值为非数值，则返回出去
 			{
@@ -252,12 +217,16 @@ else if (cmd == "A8")
 else if (cmd == "B0")   //记住此时改过
 {
 	roctorbar.setData(XAxis, parserdata[1]);
+//		if (fabs(parserdata[1]) < 100)
+//		Variable::IsStop = true;
 	return;
 }
 
 else if (cmd == "B1")
 {
 	roctorbar.setData(YAxis, parserdata[1]);
+//		if (fabs(parserdata[1]) < 100)
+//		Variable::IsStop = true;
 	return;
 }
 
@@ -275,6 +244,8 @@ else if (cmd == "B3")
 else if (cmd == "B4")
 {
 	roctorbar.setData(ZAxis, parserdata[1]);
+//		if (fabs(parserdata[1]) < 100)
+//		Variable::IsStop = true;
 	return;
 }
 
@@ -302,12 +273,17 @@ else if (cmd == "B8")
 }
 else if (cmd == "B9")
 {
-	roctorbar.setData(FixedPointSwing, parserdata[1]);
+
+	roctorbar.setData(FixedPointRotation, parserdata[1]);
+//		if (fabs(parserdata[1]) < 100)
+//		Variable::IsStop = true;
 	return;
 }
 else if (cmd == "BA")
 {
-	roctorbar.setData(FixedPointRotation, parserdata[1]);
+	roctorbar.setData(FixedPointSwing, parserdata[1]);
+//		if (fabs(parserdata[1]) < 100)
+//		Variable::IsStop = true;
 	return;
 }
 //升降轴
@@ -330,19 +306,17 @@ else if(cmd == "BF")  //变位机构2摇杆指令
 //接收到BC指令后数据清零示教过程中
 else if (cmd == "BC")
 {
-	if(robotType == CoordRobot)
-	{
-	 moto_XYZclear();  //XYZ数据清零
-	 usleep(400000);
-	}
+	moto_XYZclear();  //XYZ数据清零
+	usleep(400000);
 	DylCommon::protocol_send("BC,3");//接受到BC后就下传坐标
 }
 //焊接过程中需要清零
-else if (cmd == "BD" && robotType == CoordRobot)
+else if (cmd == "BD")
 {
 	IsClear = true;
 	IsCutting = true;
 }
+
 
 /**********************C系列指令解析*******************/
 //回零指令解析
@@ -390,14 +364,12 @@ else if (cmd == "C7")
 	back_finished = true;
 	return;
 }
-
 else if (cmd == "C8")
 {
 	if (parserdata[1] == 0)
 	Variable::RotorAxisDirectionChange = false;
 	else if (parserdata[1] == 1)
 	Variable::RotorAxisDirectionChange = true;
-	IsSendIOdata = true;
 }
 else if (cmd == "C9")
 {
@@ -420,27 +392,7 @@ else if (cmd == "CB")
 	else if (parserdata[1] == 1)
 	Variable::ModifiedGear2DirectionChange = true;
 }
-else if (cmd == "CC")
-{
-	if (parserdata[1] == 0)
-	Variable::BigArmDirectionChange = false;
-	else if (parserdata[1] == 1)
-	Variable::BigArmDirectionChange = true;
-}
-else if (cmd == "CD")
-{
-	if (parserdata[1] == 0)
-	Variable::SmallArmDirectionChange = false;
-	else if (parserdata[1] == 1)
-	Variable::SmallArmDirectionChange = true;
-}
-else if (cmd == "CE")
-{
-	if (parserdata[1] == 0)
-	Variable::UpDownAxisDirectionChange = false;
-	else if (parserdata[1] == 1)
-	Variable::UpDownAxisDirectionChange = true;
-}
+
 /************************D系列指令解析*************************/
 else if (cmd == "D1")
 {
@@ -471,7 +423,7 @@ else if (cmd == "D4")    //开始下传的指令
 else if (cmd == "D5")
 {
 	//下传结束可以开始解析
-	if(IsClear && robotType == CoordRobot)
+	if(IsClear)
 	{
 		initXyzrpw = welding.graph[0].startXyzrpw;     //把文件中第一个点保存下来
 		IsClear = false;
@@ -483,8 +435,9 @@ else if (cmd == "D5")
 }
 else if (cmd == "D7")
 {
+
 	cout << "开始焊接" << endl;
-	if (IsCutting && robotType == CoordRobot)
+	if (IsCutting)
 	{
 		Joint j;
 		Coint c;
@@ -495,11 +448,6 @@ else if (cmd == "D7")
 		xyzrpw[i] = initXyzrpw[i];  //把初始值的rpw复制过来
 		Matrix4d mat1 = xyzrpw_2_pose(xyzrpw);
 		j = NewPositionJointssolution(mat1);
-		if(!lastJIsinit)
-		{
-			lastJ = j;
-			lastJIsinit = true;
-		}
 		cout << "改变姿态" << endl;
 		moto_runJAbs(j, c, 4000);
 		cout << "改变姿态完成" << endl;
@@ -600,32 +548,20 @@ else if (cmd == "G6")
 		if (parserdata[i] <= 0 && finite(parserdata[i]))
 		{
 			cout << "最大速度下传数据不对" << endl;
-			continue;
+			return;
 		}
 		Parameter::SingleAxisMaxJspeed[i - 1] = parserdata[i];
 	}
-	for(int i = 6; i <= 7; i++)
-		Parameter::SingleAxisMaxJspeed[i] = parserdata[i];
-	for (int i = 8; i <= 12; i++)
+	for (int i = 6; i <= 10; i++)
 	{
 		if (parserdata[i] <= 0 && finite(parserdata[i]))
 		{
 			cout << "摇杆合适速度下传数据不对" << endl;
-			continue;
+			return;
 		}
-		Parameter::JoyMaxJspeed[i - 8] = parserdata[i];
+		Parameter::JoyMaxJspeed[i - 6] = parserdata[i];
 	}
-	for(int i = 13; i <= 14;i++)
-		Parameter::JoyMaxJspeed[i - 7] = parserdata[i];
-
-
-	for(int i = 0; i < 8; i++)
-	   cout << Parameter::SingleAxisMaxJspeed[i] << " ";
-	   cout << endl;
-	for(int i = 0; i < 8; i++)
-		cout << Parameter::JoyMaxJspeed[i] << " ";
-	    cout << endl;
-	    return;
+	return;
 }
 
 else if (cmd == "G7")
@@ -726,8 +662,7 @@ parserdata.clear();
 
 /***********关节式解析函数***************/
 //接收解析上位机下传的点位数据
-void Parser::parserReceviedCoordPoints()
-{
+void Parser::parserReceviedCoordPoints() {
 
 //直线     D1 0   X1 Y1 Z1 R1 P1 W1 U1 V1     X2 Y2 Z2 R2 P2 W2 U2 V2 S N
 //圆弧     D1 4   X1 Y1 Z1 R1 P1 W1 U1 V1  X Y Z R P W U V  X2 Y2 Z2 R2 P2 W2 U2 V2 S N
@@ -737,9 +672,6 @@ ArrayXd xyzrpw2 = ArrayXd::Zero(6);
 Coint c = { 0, 0 };
 ArrayXd xyzrpw = ArrayXd::Zero(6);
 Coint c2 = { 0, 0 };
-
-ArrayXd xyzrpw3 = ArrayXd::Zero(6);
-Coint c3 = { 0, 0 };
 for (int i = 2; i < 8; i++)          //起点
 	xyzrpw1[i - 2] = parserdata[i];
 c1.c1 = parserdata[8] * pi / 180;
@@ -750,8 +682,8 @@ c2.c1 = parserdata[16] * pi / 180;
 c2.c2 = parserdata[17] * pi / 180;
 double speed = parserdata[18];
 int num = parserdata[19];
-if (parserdata[1] == 4 )   //圆弧
-{
+if (parserdata[1] == 4 || parserdata[1] == 5)   //圆弧
+		{
 	xyzrpw = xyzrpw2;  //把第二点定为中点
 	c = c2;
 	for (int i = 18; i < 24; i++)    //第三个点 为末点
@@ -760,26 +692,6 @@ if (parserdata[1] == 4 )   //圆弧
 	c2.c2 = parserdata[25] * pi / 180;
 	speed = parserdata[26];
 	num = parserdata[27];
-}
-
-if(parserdata[1] == 5)
-{
-	xyzrpw = xyzrpw2;  //把第二点定为中点
-	c = c2;
-	for (int i = 18; i < 24; i++)    //第三个点 为末点
-		xyzrpw2[i - 18] = parserdata[i];
-	c2.c1 = parserdata[24] * pi / 180;
-	c2.c2 = parserdata[25] * pi / 180;
-	for (int i = 18; i < 24; i++)    //第三个点 为末点
-	xyzrpw2[i - 18] = parserdata[i];
-	c2.c1 = parserdata[24] * pi / 180;
-	c2.c2 = parserdata[25] * pi / 180;
-	for (int i = 26; i < 32; i++)    //第三个点 为末点
-		xyzrpw3[i - 26] = parserdata[i];
-	c3.c1 = parserdata[32] * pi / 180;
-    c3.c2 = parserdata[33] * pi / 180;
-	speed = parserdata[34];
-	num = parserdata[35];
 }
 switch ((int) parserdata[1])  //根据所传类型来保存数据点       0--空移线   1--插补线  4--圆弧线
 {
@@ -793,10 +705,16 @@ case 4:
 	welding.receiveArcPoints(xyzrpw1, c1, xyzrpw, c, xyzrpw2, c2, speed, num);
 	break;
 case 5:
-	welding.receiveCircle4Points(xyzrpw1, c1, xyzrpw, c, xyzrpw2, c2,xyzrpw3, c3, speed, num);
-//	welding.receiveCirclePoints(xyzrpw1, c1, xyzrpw, c, xyzrpw2, c2, speed, num);
+	welding.receiveCirclePoints(xyzrpw1, c1, xyzrpw, c, xyzrpw2, c2, speed, num);
 //	welding.receiveCircle1Points(xyzrpw1, c1, xyzrpw, c, xyzrpw2, c2, speed, num);
 	break;
 }
 }
 
+void Parser::changeRPW(ArrayXd &xyzrpw) {
+for (int i = 3; i < 6; i++) {
+	if (xyzrpw[i] < 0)
+		xyzrpw[i] += 360;
+}
+
+}

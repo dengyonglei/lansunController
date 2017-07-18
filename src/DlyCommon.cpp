@@ -88,16 +88,9 @@ void DylCommon::protocol_send2(const string &str)
 
  void  DylCommon::getCurrentPosition(Joint &curJ,Coint &curC)
  {
-            if(robotType == CoordRobot)
-            {
-				curJ.j1 = (double)(MOT->J1step) / J1PUPR;
-				curJ.j2 = (double)(MOT->J2step) / J2PUPR;
-            }
-            else
-            {
-            	curJ.j1 = (double)(MOT->J1step) * pi / 180.0 / J1PUPR;
-            	curJ.j2 = (double)(MOT->J2step) * pi / 180.0 / J2PUPR;
-            }
+
+	        curJ.j1 = (double)(MOT->J1step) / J1PUPR;
+			curJ.j2 = (double)(MOT->J2step) / J2PUPR;
 			curJ.j3 = (double)(MOT->J3step) / J3PUPR;
 			curJ.j4 = (double)(MOT->J4step) * pi / 180.0 /J4PUPR;
 			curJ.j5 = (double)(MOT->J5step) * pi / 180.0 /J5PUPR;

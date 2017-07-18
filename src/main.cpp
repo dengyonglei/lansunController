@@ -18,7 +18,6 @@ using namespace std;
 #include "Parser.h"
 #include "Parameter.h"
 #include "robot_class/udp.h"
-#include <time.h>
 // debug
 #include "FixedLengthMoving.h"
 volatile unsigned long h2p_lw_led_addr;
@@ -29,19 +28,14 @@ volatile unsigned long h2p_lw_AVO_addr;    //电流电压口
 //==========================每1mm离散点个数
 //extern float RESOLUTION;
 extern float RESOLUTION;
-double J1PUPR = 3746.0317460317460317460317460317;
-double J2PUPR = 2285.7142857142857142857142857143;
-double J3PUPR = 1591.5494309189533576888376337251;
-double J4PUPR = 1111.1111111111112;
-double J5PUPR = 1111.1111111111112;
-double J6PUPR = 1111;
+double J1PUPR = 1000;
+double J2PUPR = 1000;
+double J3PUPR = 1000;
+double J4PUPR = 1000;
+double J5PUPR = 1000;
+double J6PUPR = 1000;
 double  J7PUPR = 1000;
 double  J8PUPR = 1000;
-RobotType robotType = JointRobot;
-
-
-Joint lastJ = {0,0,0,0,0};
-bool lastJIsinit = false;
 Matrix4d TCFmatrix;
 pthread_mutex_t mutex;
 Parser parser;  //解析类
@@ -74,38 +68,21 @@ void *thread_function2(void *arg);
 
 int main()
 {
-
-	version = "V2017 07 17 -0";	//版本号需要自己设定
+	// 版本号
+	version = "V2017 07 yingjian ceshi";	//版本号需要自己设定
 	// 初始化系统信息
 	initSystemState();
-
-
 	dh =  0;
 	TCFmatrix << 1, 0, 0,0,
 				0, 1, 0, 0,
 				0, 0, 1, 0,
 				0, 0, 0, 1;
-	POSITIONER << 1, 0, 0, 0,
+	POSITIONER << 1, 0, 0,0,
 			      0, 1, 0, 0,
 			      0, 0, 1, 0,
 			      0, 0, 0, 1;
 	RESOLUTION = 10; 	//表示离散精度为0.1mm
-	RESOLUTION_ATT = 40;  //表示姿态离散精度为1/30
-	  float JAAA_min[6] = {-17000000.0, -17000000.0, -5000, -3600.0 / 180 * pi, -3600.0 / 180 * pi, -3600.0 / 180 * pi};
-	  float JAAA_max[6] = { 17000000.0,  17000000.0,   5000,  3600.0 / 180 * pi, 3600.0 / 180 * pi,  3600.0 / 180 * pi};
-	for(int i = 0; i < 6; i++)
-	{
-		 JA_min[i] = JAAA_min[i];
-		 JA_max[i] = JAAA_max[i];
-	}
-	////==========================关节机械手限制角度
-	//float JA_min[6] = {-170.0/180*pi, -170.0/180*pi, -500, -170.0/180*pi, -90.0/180*pi, -170.0/180*pi};
-	//float JA_max[6] = { 170.0/180*pi,  170.0/180*pi,   10,  170.0/180*pi,  90.0/180*pi,  170.0/180*pi};
-	//
-	////==========================变位机构限制角度
-	//float CA_min[2] = {-60.0/180*pi, -170.0/180*pi};
-	//float CA_max[2] = { 60.0/180*pi,  170.0/180*pi};
-
+	RESOLUTION_ATT = 50;  //表示姿态离散精度为1/30
 	void *virtual_base;
 	int fd;
 // 打开内存映射设备驱动
@@ -148,6 +125,71 @@ int main()
 	getVList(vddTable);//
 	udp::initUdpSocket();
 //***********************************************
+
+
+//	allAxisInit();
+//	J1RunToLimit(1,100);
+//	 AVO->field.start = 3;
+//	 AVO->field.spd = 0;
+//	 AVO->field.pwr = 0;
+//
+//	 for(int n=0;n<2;n++){
+//		 for(float i=0;i<2*pi;i=i+0.01*pi){
+//
+//				AVO->field.ch = 0;
+//				AVO->field.data = (float)0xFF * sinf(i+0*pi/8.0) + 0xFF;
+//				usleep(5000);
+//
+//				AVO->field.ch = 1;
+//				AVO->field.data = (float)0xFF * sinf(i+1*pi/8.0) + 0xFF;
+//				usleep(5000);
+//
+//				AVO->field.ch = 2;
+//				AVO->field.data = (float)0xFF * sinf(i+2*pi/8.0) + 0xFF;
+//				usleep(5000);
+//
+//				AVO->field.ch = 3;
+//				AVO->field.data = (float)0xFF * sinf(i+3*pi/8.0) + 0xFF;
+//				usleep(5000);
+//		 }
+//	 }
+//
+//	//===============================输入输出测试代码
+//
+//		while(1){
+//			if(((IOM->DATA ) & 0X00100000))
+//				IOM->DATA =0xFFFFFFFe;
+//			else IOM->DATA=0xFFFFFFFF;
+//			if (((IOM->DATA ) & 0X00200000))
+//				IOM->DATA =0xFFFFFFFd;
+//			if (((IOM->DATA ) & 0X00400000))
+//				IOM->DATA =0xFFFFFFFb;
+//			if (((IOM->DATA ) & 0X00800000))
+//				IOM->DATA =0xFFFFFFF7;
+//			if (((IOM->DATA ) & 0X01000000))
+//				IOM->DATA =0xFFFFFFeF;
+//			if (((IOM->DATA ) & 0X02000000))
+//				IOM->DATA =0xFFFFFFdF;
+//			if (((IOM->DATA ) & 0X04000000))
+//				IOM->DATA =0xFFFFFFbF;
+//			if (((IOM->DATA ) & 0X08000000))
+//				IOM->DATA =0xFFFFFF7F;
+//			if (((IOM->DATA ) & 0X10000000))
+//				IOM->DATA =0xFFFFFeFF;
+//			if (((IOM->DATA ) & 0X20000000))
+//				IOM->DATA =0xFFFFFdFF;
+//			if (((IOM->DATA ) & 0X40000000))
+//				IOM->DATA =0xFFFFFbFF;
+//			if (((IOM->DATA ) & 0X80000000))
+//				IOM->DATA =0xFFFFF7FF;
+//			usleep(100000);
+//		}
+//
+//	cout<<"...test end here..."<<endl;
+//	while(1);
+
+
+
 
 
 
@@ -239,6 +281,7 @@ int main()
 		perror("Thread destroy failed!\n");
 		exit(EXIT_FAILURE);
 	}
+
 
 // 清除内存映射
 	if (munmap(virtual_base, HW_REGS_SPAN) != 0)
@@ -368,7 +411,7 @@ void *thread_function2(void *arg)
 			}
 
 		}
-		if(parser.IsSendIOdata)
+		if(parser.runing)
 		parser.ioparameter.run();   //上传IO口数据
 		if(!udp::IsOpenUdp)
 		{

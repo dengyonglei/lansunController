@@ -49,7 +49,6 @@ public:
 	//圆弧接收点
 	void receiveArcPoints(const ArrayXd &p1, const Coint& c1, const ArrayXd &p,const Coint& c, const ArrayXd &p2, const Coint& c2, double speed,int num);
 	//圆接收数据
-	void receiveCircle4Points(const ArrayXd &p1, const Coint& c1,const ArrayXd &p, const Coint& c, const ArrayXd &p2, const Coint& c2,const ArrayXd &p3, const Coint& c3,double speed, int num);
 	void receiveCirclePoints(const ArrayXd &p1, const Coint& c1,const ArrayXd &p, const Coint& c, const ArrayXd &p2, const Coint& c2,double speed, int num);
 	void receiveCircle1Points(const ArrayXd &p1, const Coint& c1,const ArrayXd &p, const Coint& c, const ArrayXd &p2, const Coint& c2,double speed, int num);
 	void receiveArcStrickData(double delay, int num);   //接收起弧数据

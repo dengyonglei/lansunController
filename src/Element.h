@@ -50,10 +50,10 @@ public:
 	list<MJCPoint> interpolationPointsIndexs;
 	arcStrickObject arcStrickObj;   //起弧类
 	arcQuenchObject arcQuenchObj;   //熄弧类
-	bool checkInterpolations(list<MJCoint> abcdef);    //校验插补点是否正确
 	void getMoveLineInterpolations();   //得到空移线的插补点 其实就是末点 为了统一
 	bool getLineInterpolations();       //得到直线的插补点
 	bool getArcInterpolations();        //得到圆弧的插补点
+	bool checkInterpolations(list<MJCoint> abcdef);    //校验插补点是否正确
 	bool getInterpolations();             //得到插补点
 	static double getTwoLinesAngle(Element &line1,Element &line2);   //得到两条线之间的夹角
 	int Index; //线段的索引值  与序号区别开

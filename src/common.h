@@ -42,6 +42,7 @@ using namespace std;
 #include "scaralib.h"
 #include "poseOfWeldingGun.h"
 #include "Torchcalibration.h"
+#include "TestOutputFile.h"
 #include "md5.h"
 #include "ProjectUpdate.h"
 #include "robot_class/Variable.h"      //±‰¡ø¿‡
@@ -49,11 +50,10 @@ using namespace std;
 #define HW_REGS_BASE ( ALT_STM_OFST )
 #define HW_REGS_SPAN ( 0x04000000 )
 #define HW_REGS_MASK ( HW_REGS_SPAN - 1 )
-enum RobotType
-{
-    JointRobot = 0,
-	CoordRobot = 1
-};
+
+
+
+
 //
 typedef struct
 {
@@ -188,9 +188,7 @@ extern double J5PUPR;
 extern double J6PUPR;
 extern double J7PUPR;
 extern double J8PUPR;
-extern Joint lastJ;
-extern bool lastJIsinit;
-extern RobotType robotType;
+
 extern volatile unsigned long h2p_lw_led_addr;
 extern volatile unsigned long h2p_lw_key_addr;
 extern volatile unsigned long h2p_lw_mot_addr;

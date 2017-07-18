@@ -120,18 +120,8 @@ void moto_runJ(Joint j, Coint c,double speed)
 	MOT->field.D3 = 'S';//停止指令，给
 
 	//转化为脉冲数
-	 long long int j1pu;
-	 long long int j2pu;
-	if(robotType == CoordRobot)
-	{
-	  j1pu = j.j1  * J1PUPR;
-	  j2pu = j.j2  * J2PUPR;
-	}
-	else
-	{
-	  j1pu = j.j1 / pi*180 * J1PUPR;
-	  j2pu = j.j2 / pi*180 * J2PUPR;
-	}
+	long long int j1pu = j.j1          * J1PUPR;
+	long long int j2pu = j.j2          * J2PUPR;
 	long long int j3pu = j.j3          * J3PUPR;
 	long long int j4pu = j.j4 / pi*180 * J4PUPR;
 	long long int j5pu = j.j5 / pi*180 * J5PUPR;
@@ -271,18 +261,6 @@ void moto_runJ(Joint j, Coint c,double speed)
 			}
 		}
 		delay1ms();     //延时1s,让其全部完成为止
-	 if(Variable::IsStop)   //如果接收到停止指令就让他停下来
-			 {
-	//			 cout<<"减速"<<endl;
-			  i = i - 5;
-			  if(i < 1)
-			  {
-				cout<<"轴移动暂停"<<endl;
-				robot_stop();
-				Variable::IsStop = false;
-				break;
-			  }
-	}
 	}
 	robot_stop();
 }
@@ -307,18 +285,10 @@ bool moto_runJAbs(Joint j, Coint c,double speed)
 		long int oldJ6step = MOT->J6step;
 		long int oldJ7step = MOT->J7step;
 		long int oldJ8step = MOT->J8step;
-		long long int j1pu;
-		long long int j2pu;
-        if(robotType == CoordRobot)
-        {
-		 j1pu = j.j1 * J1PUPR - oldJ1step;
-		 j2pu = j.j2 * J2PUPR - oldJ2step;
-        }
-        else
-        {
-         j1pu = j.j1 / pi*180 * J1PUPR - oldJ1step;
-         j2pu = j.j2 / pi*180 * J2PUPR - oldJ2step;
-        }
+
+
+		long long int j1pu = j.j1          * J1PUPR - oldJ1step;
+		long long int j2pu = j.j2          * J2PUPR - oldJ2step;
 		long long int j3pu = j.j3          * J3PUPR - oldJ3step;
 		long long int j4pu = j.j4 / pi*180 * J4PUPR - oldJ4step;
 		long long int j5pu = j.j5 / pi*180 * J5PUPR - oldJ5step;
@@ -462,18 +432,8 @@ void moto_runJoyAbs(Joint j, Coint c)
 	long int oldJ6step = MOT->J6step;
 	long int oldJ7step = MOT->J7step;
 	long int oldJ8step = MOT->J8step;
-	long long int j1pu;
-	long long int j2pu;
-	if(robotType == CoordRobot)
-	{
-	 j1pu = j.j1  * J1PUPR - oldJ1step;
-	 j2pu = j.j2  * J2PUPR - oldJ2step;
-	}
-	else
-	{
-	  j1pu = j.j1 / pi*180 * J1PUPR - oldJ1step;
-	  j2pu = j.j2 / pi*180 * J2PUPR - oldJ2step;
-	}
+	long long int j1pu = j.j1          * J1PUPR - oldJ1step;
+	long long int j2pu = j.j2          * J2PUPR - oldJ2step;
 	long long int j3pu = j.j3          * J3PUPR - oldJ3step;
 	long long int j4pu = j.j4 / pi*180 * J4PUPR - oldJ4step;
 	long long int j5pu = j.j5 / pi*180 * J5PUPR - oldJ5step;
@@ -573,18 +533,8 @@ void moto_runInterpolationAbs(Joint j, Coint c,float speed)
 	long int oldJ8step = MOT->J8step;
 
     //这是需要走的脉冲当量数
-	long long int j1pu;
-	long long int j2pu;
-	if(robotType == CoordRobot)
-	{
-	 j1pu = j.j1  * J1PUPR - oldJ1step;
-	 j2pu = j.j2  * J2PUPR - oldJ2step;
-	}
-	else
-	{
-	 j1pu = j.j1 / pi*180 * J1PUPR - oldJ1step;
-	 j2pu = j.j2 / pi*180 * J2PUPR - oldJ2step;
-	}
+	long long int j1pu = j.j1          * J1PUPR - oldJ1step;
+	long long int j2pu = j.j2          * J2PUPR - oldJ2step;
 	long long int j3pu = j.j3          * J3PUPR - oldJ3step;
 	long long int j4pu = j.j4 / pi*180 * J4PUPR - oldJ4step;
 	long long int j5pu = j.j5 / pi*180 * J5PUPR - oldJ5step;
@@ -633,18 +583,10 @@ void moto_runJoy(Joint j, Coint c)
 	long int oldJ6step = MOT->J6step;
 	long int oldJ7step = MOT->J7step;
 	long int oldJ8step = MOT->J8step;
-	long long int j1pu;
-	long long int j2pu;
-	if(robotType == CoordRobot)
-	{
-	 j1pu = j.j1  * J1PUPR - oldJ1step;
-	 j2pu = j.j2  * J2PUPR - oldJ2step;
-	}
-	else
-	{
-	 j1pu = j.j1 / pi*180  * J1PUPR - oldJ1step;
-	 j2pu = j.j2 / pi*180  * J2PUPR - oldJ2step;
-	}
+
+
+	long long int j1pu = j.j1           * J1PUPR - oldJ1step;
+	long long int j2pu = j.j2           * J2PUPR - oldJ2step;
 	long long int j3pu = j.j3           * J3PUPR - oldJ3step;
 	long long int j4pu = j.j4 / pi*180  * J4PUPR - oldJ4step;
 	long long int j5pu = j.j5 / pi*180  * J5PUPR - oldJ5step;
@@ -695,22 +637,8 @@ void moto_SettingJ(char ch, double angle,double speed)
 //根据轴来切换
 	switch(ch)
 {
-		case 1:
-		{
-			if(robotType == CoordRobot)
-			j.j1 = angle;
-			else
-			j.j1 = angle / 180.0 * pi;
-			break;
-		}
-		case 2:
-		{
-			if(robotType == CoordRobot)
-			j.j2 = angle ;
-			else
-			j.j2 = angle / 180.0 * pi;
-			break;
-		}
+		case 1: j.j1 = angle;  break;
+		case 2: j.j2 = angle ; break;
 		case 3: j.j3 = angle ; break;
 		case 4: j.j4 = angle / 180.0 * pi; break;
 		case 5: j.j5 = angle / 180.0 * pi; break;
@@ -742,29 +670,21 @@ void J1RunToLimit(char ch, int speedL)        //轴    速度
 	}
 
 	MOT->field.D3 = 'S';         //是下面mot就是一个地址来控制的哈哈
-	switch(ch)
-	{     //根据轴来判定          是极限位置就乘以180   不是极限
-		case 1:
-			    if(Variable::BigArmDirectionChange)
-			    j1pu = (J1LMT) ? -180 * J1PUPR :  180 * J1PUPR;
-			    else
-			    j1pu = (J1LMT) ? 180 * J1PUPR : - 180 * J1PUPR;//旋转180吗，  怎么回事呢
+	switch(ch){     //根据轴来判定          是极限位置就乘以180   不是极限
+		case 1: j1pu = (J1LMT) ? 180 * J1PUPR : - 180 * J1PUPR;//旋转180吗，  怎么回事呢
 				lastLMT = (J1LMT) ? true : false;    //
+
+
 				MOT->contia = abs(j1pu);   //取模去运动
 				break;
-		case 2:
-			    if(Variable::SmallArmDirectionChange)
-			    j2pu = (J2LMT) ? -180 * J2PUPR : 180 * J2PUPR;
-			    else
-			    j2pu = (J2LMT) ? 180 * J2PUPR : - 180 * J2PUPR;  //不是极限位置
+		case 2: j2pu = (J2LMT) ? 180 * J2PUPR : - 180 * J2PUPR;  //不是极限位置
 				lastLMT = (J2LMT) ? true : false;
+
 				MOT->contia = abs(j2pu);
 				break;
-		case 3:  if(Variable::UpDownAxisDirectionChange)
-			     j3pu = (J3LMT) ? -2000 * J3PUPR :  2000 * J3PUPR;
-		         else
-			     j3pu = (J3LMT) ? 2000 * J3PUPR : - 2000 * J3PUPR;
+		case 3: j3pu = (J3LMT) ? 500 * J3PUPR : - 500 * J3PUPR;
 				lastLMT = (J3LMT) ? true : false;
+
 				MOT->contia = abs(j3pu);
 				break;
 		case 4:
@@ -805,6 +725,7 @@ void J1RunToLimit(char ch, int speedL)        //轴    速度
 			break;
 		default:break;
 	}
+
 	MOT->J1step = j1pu;
 	MOT->J2step = j2pu;
 	MOT->J3step = j3pu;
@@ -860,7 +781,86 @@ void J1RunToLimit(char ch, int speedL)        //轴    速度
 	}
 }
 
+//注意J4回零是一定要保证枪在中心轴的左侧
+void allAxisInit()
+{
 
+	Joint j;   //六个轴的,回转偏移点
+	Coint c;    //变位机构的角度值
+
+	//粗到限位附近       5个轴回零
+
+	J1RunToLimit(1,100);    //始终
+	J1RunToLimit(2,100);
+	J1RunToLimit(3,100);
+	J1RunToLimit(4,100);
+	J1RunToLimit(5,100);
+	J1RunToLimit(7,100);
+	J1RunToLimit(8,100);
+	sleep(1);//等待1s
+    cout<<"粗回零完成"<<endl;
+	//精到限位附近
+	J1RunToLimit(1,10);
+	//到极限位置点      然后进行回转偏移
+	J1RunToLimit(2,10);
+	J1RunToLimit(3,10);
+	J1RunToLimit(4,0);
+	J1RunToLimit(5,10);
+	J1RunToLimit(7,10);
+	J1RunToLimit(8,10);
+
+	sleep(1);
+	cout<<"精回零完成"<<endl;
+	//设置回零偏移
+	j.j1 =  0;
+	j.j2 =  0;
+	j.j3 =  0;
+	j.j4 =   0;
+	j.j5 =  0;
+	j.j6 = 0;
+	c.c1 = 0;
+	c.c2 = 0;
+	moto_runJ(j,c,50);
+	cout<<"回零完成"<<endl;
+}
+
+//注意J4回零是一定要保证枪在中心轴的左侧
+void allAxisInit(double speed)
+{
+    double rate=speed/4000.0;
+	Joint j;   //六个轴的,回转偏移点
+	Coint c;    //变位机构的角度值
+
+	//粗到限位附近       5个轴回零
+
+	J1RunToLimit(1,1000*rate);    //始终
+	J1RunToLimit(2,500*rate);
+	J1RunToLimit(3,500*rate);
+	J1RunToLimit(4,100*rate);
+	J1RunToLimit(5,1000*rate);
+	sleep(1);//等待1s
+    cout<<"粗回零完成"<<endl;
+	//精到限位附近
+	J1RunToLimit(1,10*rate);
+	//到极限位置点      然后进行回转偏移
+	J1RunToLimit(2,1*rate);
+	J1RunToLimit(3,10*rate);
+	J1RunToLimit(4,1*rate);
+	J1RunToLimit(5,10*rate);
+	sleep(1);
+	cout<<"精回零完成"<<endl;
+	//设置回零偏移
+	j.j1 =  - 7.0 / 180.0 * pi;
+	j.j2 =  - 9.0 / 180.0 * pi;
+	j.j3 =  - 10.0;
+	j.j4 =    20.0 / 180.0 * pi;
+	j.j5 =  - 55.0 / 180.0 * pi;
+	j.j6 = 0;
+	c.c1 = 0;
+	c.c2 = 0;
+	moto_runJ(j,c,1000);
+	cout<<"回零完成"<<endl;
+}
 void moto_init(void)
 {
 
@@ -884,11 +884,30 @@ void moto_XYZclear(void)
 
 
 }
+void robot_back(void)
+{
+	allAxisInit();    //所有轴回到原点
+}
+
+void robot_start(void){
+
+	MJCoint mjc;
+
+	mjc.j.j1 = 0;
+	mjc.j.j2 = 0;
+	mjc.j.j3 = 0;
+	mjc.j.j4 = 0;
+	mjc.j.j5 = 0;
+	mjc.j.j6 = 0;
+	mjc.c.c1 = 0;
+	mjc.c.c2 = 0;
+
+	moto_runJ(mjc.j,mjc.c,4000);
+}
 
 void robot_stop(void)
 {
 	MOT->field.D3 = 'S';
-	usleep(50000);
 	MOT->J1step = 0;
 	MOT->J2step = 0;
 	MOT->J3step = 0;
@@ -898,8 +917,183 @@ void robot_stop(void)
 	MOT->J7step = 0;
 	MOT->J8step = 0;
 	MOT->contia = 0;
+
 	MOT->Tt = 0xFFFF;
-    usleep(50000);
+//
 	MOT->field.D3 = 'R';
 }
 
+
+
+//只适用于单轴的移动
+void moto_runJNew(Joint j, Coint c,double speed,double JPUPR)
+{
+
+	speed = speed * 3;
+	double addn = 10.0 ;
+    unsigned int acctimes ;   //加减速次数
+	unsigned int dectimes ;	  //减速次数
+	double initJPUPR = 1000;  //基准脉冲
+	acctimes = dectimes = speed / 4.0;
+	if(j.j1 != 0 || j.j2 != 0 || j.j3 !=0)
+	{
+           acctimes = dectimes = speed * initJPUPR / JPUPR / addn / 3.0;
+	}
+	else
+	{
+		speed = speed / 3.0 ;
+		acctimes = dectimes = speed / 2.0 / addn ;
+	}
+	if( acctimes<2)
+    	    acctimes = dectimes = 2;
+	float minSpeed = 600; //最小速度
+	float currentSpeed = minSpeed; //当前速度
+	unsigned long int isContia = 0;
+	MOT->field.D3 = 'S';
+	long long int j1pu = j.j1          * J1PUPR;
+	long long int j2pu = j.j2          * J2PUPR;
+	long long int j3pu = j.j3          * J3PUPR;
+	long long int j4pu = j.j4 / pi*180 * J4PUPR;
+	long long int j5pu = j.j5 / pi*180 * J5PUPR;
+	long long int j6pu = j.j6 / pi*180 * J6PUPR;
+	long long int j7pu = c.c1 / pi*180 * J7PUPR;
+	long long int j8pu = c.c2 / pi*180 * J8PUPR;
+
+	long int oldJ1step = MOT->J1step;
+	long int oldJ2step = MOT->J2step;
+	long int oldJ3step = MOT->J3step;
+	long int oldJ4step = MOT->J4step;
+	long int oldJ5step = MOT->J5step;
+	long int oldJ6step = MOT->J6step;
+	long int oldJ7step = MOT->J7step;
+	long int oldJ8step = MOT->J8step;
+
+	unsigned long int contia = (unsigned long int)(sqrtf(j1pu * j1pu + j2pu * j2pu + \
+														 j3pu * j3pu + j4pu * j4pu + \
+														 j5pu * j5pu + j6pu * j6pu + \
+														 j7pu * j7pu + j8pu * j8pu));
+
+
+	MOT->J1step = j1pu;
+	MOT->J2step = j2pu;
+	MOT->J3step = j3pu;
+	MOT->J4step = j4pu;
+	MOT->J5step = j5pu;
+	MOT->J6step = j6pu;
+	MOT->J7step = j7pu;
+	MOT->J8step = j8pu;
+	MOT->contia = contia;
+	MOT->field.D3 = 'R';
+	int mm = 0;
+	while(MOT->field.D3 == 'N')
+	{
+
+		if(Variable::IsStop)  //暂停的状态
+		{
+			 if(j.j1 != 0 || j.j2 != 0 || j.j3 !=0)
+			{
+				 dectimes =  speed * initJPUPR / JPUPR / addn / 3.0;
+			}
+			currentSpeed -= (speed / dectimes);
+	        if (currentSpeed <= minSpeed)
+	       {
+			currentSpeed = minSpeed;
+			robot_stop();
+			cout << "单轴停止" <<endl ;
+			Variable::IsStop = false;
+			break;
+	       }
+
+		}
+		long long int j1has = MOT->J1step - oldJ1step;
+		long long int j2has = MOT->J2step - oldJ2step;
+		long long int j3has = MOT->J3step - oldJ3step;
+		long long int j4has = MOT->J4step - oldJ4step;
+		long long int j5has = MOT->J5step - oldJ5step;
+		long long int j6has = MOT->J6step - oldJ6step;
+		long long int j7has = MOT->J7step - oldJ7step;
+		long long int j8has = MOT->J8step - oldJ8step;
+
+		isContia = (unsigned long int)(sqrtf(j1has * j1has + j2has * j2has + \
+											 j3has * j3has + j4has * j4has + \
+											 j5has * j5has + j6has * j6has + \
+											 j7has * j7has + j8has * j8has));
+		if (contia <= (acctimes + dectimes))   //距离很短，只用加减速就可以处理的
+				{
+					acctimes = dectimes = contia / 2;
+				}
+		//如果当前速度小于设定速度，并且完成度没到加速过程
+		if ((currentSpeed < speed) && (isContia <  acctimes))
+				{
+			     //两种方式的加减速都要考虑
+				currentSpeed += (speed / acctimes);
+				if (currentSpeed >= speed)
+				{
+					   currentSpeed = speed;
+
+				}
+
+				}
+		if(isContia > (contia - dectimes + minSpeed / addn))  //处于减速过程
+		{
+			currentSpeed -= (speed / dectimes);
+			if (currentSpeed <= minSpeed)
+			currentSpeed = minSpeed;
+
+		}
+		if(speed <= minSpeed && speed > 0)    //如果小于最小速度就不发生变化
+		{
+			if (speed < 1)
+			speed = 1;
+			currentSpeed = speed;
+		}
+
+		MOT->Tt = (unsigned long int)(50000000.0/(8.0*JPUPR*currentSpeed/60.0));
+		mm ++;
+		if(mm / 10 == 0 )
+			cout << "Tt:" << (unsigned long int)(50000000.0/(8.0*JPUPR*currentSpeed/60.0)) << endl;
+		delayNus(50);
+	}
+
+}
+
+//摇杆的单轴移动和定长移动解决
+void moto_SettingJNew(char ch, double angle,double speed)
+{
+	Joint j;
+	Coint c;
+    double JPUPR;
+	j.j1 = 0; j.j2 = 0; j.j3 = 0; j.j4 = 0;
+	j.j5 = 0; j.j6 = 0; c.c1 = 0; c.c2 = 0;
+
+//根据轴来切换
+switch(ch)
+{
+		case 1: j.j1 = angle         ;JPUPR = J1PUPR;   break;
+		case 2: j.j2 = angle         ;JPUPR = J2PUPR;   break;
+		case 3: j.j3 = angle ;            JPUPR = J3PUPR;   break;
+		case 4: j.j4 = angle / 180.0 * pi;JPUPR = J4PUPR;   break;
+		case 5: j.j5 = angle / 180.0 * pi;JPUPR = J5PUPR;   break;
+		case 6: j.j6 = angle / 180.0 * pi;JPUPR = J6PUPR;   break;
+		case 7: c.c1 = angle / 180.0 * pi;JPUPR = J7PUPR;   break;
+		case 8: c.c2 = angle / 180.0 * pi;JPUPR = J8PUPR;   break;
+		default:break;
+}
+moto_runJNew(j, c,speed,JPUPR);//旋转一个角度吗
+}
+//单轴的速度限制
+void singleAxisSpeedLimit(Joint j,Coint c)
+{
+	        long long int j1pu = j.j1          * J1PUPR;
+			long long int j2pu = j.j2          * J2PUPR;
+			long long int j3pu = j.j3          * J3PUPR;
+			long long int j4pu = j.j4 / pi*180 * J4PUPR;
+			long long int j5pu = j.j5 / pi*180 * J5PUPR;
+			long long int j6pu = j.j6 / pi*180 * J6PUPR;
+			long long int j7pu = c.c1 / pi*180 * J7PUPR;
+			long long int j8pu = c.c2 / pi*180 * J8PUPR;
+			unsigned long int contia = (unsigned long int)(sqrtf(j1pu * j1pu + j2pu * j2pu + \
+																	 j3pu * j3pu + j4pu * j4pu + \
+																	 j5pu * j5pu + j6pu * j6pu + \
+																	 j7pu * j7pu + j8pu * j8pu));
+}

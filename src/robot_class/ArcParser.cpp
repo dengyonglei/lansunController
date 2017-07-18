@@ -8,7 +8,7 @@
 #include "ArcParser.h"
 #include "math.h"
 #define PI 3.1415926
-double ArcParser::divideLength = 4;
+double ArcParser::divideLength = 2;
 #include <iostream>
 using namespace std;
 ArcParser::ArcParser() {
@@ -173,10 +173,11 @@ bool ArcParser::isEndPoint(double x1, double y1, double z1, double x2, double y2
 {
     return fabs(x1 - x2) < 0.000001 && fabs(y1 - y2) < 0.000001 && fabs(z1 - z2) < 0.000001;
 }
+
 //得到圆弧的等分点 通过三个点得到     圆的函数
 bool ArcParser::getCircleDividePoint(double x1, double y1, double z1, double r1 , double p1 ,double w1 , double x2,
                                     double y2, double z2, double x3, double y3, double z3, double r3,
-                                    double p3,double w3, vector<vector<double>>& midPoint )
+                                    double p3,double w3, vector<double>& midPoint )
 {
    vector<vector<double>> arcDividePoint;
    vector<vector<double>> newArcDivide;     //新的圆的等分函数
@@ -186,75 +187,18 @@ bool ArcParser::getCircleDividePoint(double x1, double y1, double z1, double r1 
 	cout << "1圆打断失败" << endl;
     return false;
    }
-      int num = arcDividePoint.size();
+   int num = arcDividePoint.size();
           //倒数第一个点就是x3, y3, z3,这里是取倒数第三个点，然后以这个点为起点，x3, y3, z3为中点，x1, y1, z1为终点再次等分圆弧
-	  vector<double> preLast = arcDividePoint.at(num - 5);
-	  //计算新的圆弧等分
-	  if(!getArcDividePoint(preLast[0], preLast[1], preLast[2], preLast[3],
-			  preLast[4], preLast[5],x3, y3, z3, x1, y1, z1, r1, p1,w1, num - 1,newArcDivide))
-	  {
-		  cout << "2圆打断失败" << endl;
-		  return false;
-	  }
-	  vector<double> pos1 = newArcDivide[newArcDivide.size() * 0.25 + 1];
-	  vector<double> pos2 = newArcDivide[newArcDivide.size() * 0.5  + 1];
-	  vector<double> pos3 = newArcDivide[newArcDivide.size() * 0.75 + 1];
-	  midPoint.push_back(pos1);
-	  midPoint.push_back(pos2);
-	  midPoint.push_back(pos3);
-      return true;
-}
-//得到圆弧的等分点 通过三个点得到     圆的函数
-bool ArcParser::getCircleDivide4Point(double x1, double y1, double z1, double r1 , double p1 ,double w1 , double x2,
-                                    double y2, double z2, double x3, double y3, double z3, double r3,
-                                    double p3,double w3, double x4, double y4, double z4, double r4,
-                                    double p4,double w4, vector<vector<double>>& midPoint )
-{
-   vector<vector<double>> arcDividePoint;
-   vector<vector<double>> newArcDivide;     //新的圆的等分函数
-   vector<vector<double>> newArc1Divide;     //新的圆的等分函数
-   arcDividePoint.clear();
-   newArcDivide.clear();
-   newArc1Divide.clear();//圆的清零
-   if(!getArcDividePoint(x1, y1, z1, r1, p1,w1, x2, y2, z2, x3, y3, z3, r3, p3,w3,0,arcDividePoint))   //
-   {
-	cout << "1圆打断失败" << endl;
-    return false;
-   }
-     int num = arcDividePoint.size();
-	  //倒数第一个点就是x3, y3, z3,这里是取倒数第三个点，然后以这个点为起点，x3, y3, z3为中点，x1, y1, z1为终点再次等分圆弧
-	  vector<double> preLast = arcDividePoint.at(num - 3);
-
-	  if(!getArcDividePoint(preLast[0], preLast[1], preLast[2], preLast[3],
-				  preLast[4], preLast[5],x3, y3, z3, x1, y1, z1, r1, p1,w1, num - 1,newArcDivide))
-	  {
-		  cout << "后打断失败" << endl;
-		  return false;
-	  }
-	  //计算新的圆弧等分
-	  if(!getArcDividePoint(preLast[0], preLast[1], preLast[2], preLast[3],
-			  preLast[4], preLast[5],x3, y3, z3, x4, y4, z4, r4, p4,w4, num - 1,newArcDivide))
-	  {
-		  cout << "2圆打断失败" << endl;
-		  return false;
-	  }
-	  vector<double> pos = newArcDivide[newArcDivide.size() * 0.5  + 1];
-	  midPoint.push_back(pos);
-
-	  num = newArcDivide.size();
-	  //倒数第一个点就是x3, y3, z3,这里是取倒数第三个点，然后以这个点为起点，x3, y3, z3为中点，x1, y1, z1为终点再次等分圆弧
-	   preLast = newArcDivide.at(num - 3);
-	  //计算新的圆弧等分
-	  if(!getArcDividePoint(preLast[0], preLast[1], preLast[2], preLast[3],
-			  preLast[4], preLast[5],x4, y4, z4, x1, y1, z1, r1, p1,w1, num - 1,newArc1Divide))
-	  {
-		  cout << "3圆打断失败" << endl;
-		  return false;
-	  }
-	  pos.clear();
-	  pos = newArc1Divide[newArc1Divide.size() * 0.5  + 1];
-	  midPoint.push_back(pos);
-	  return true;
+          vector<double> preLast = arcDividePoint.at(num - 3);
+          //计算新的圆弧等分
+          if(!getArcDividePoint(preLast[0], preLast[1], preLast[2], preLast[3],
+                  preLast[4], preLast[5],x3, y3, z3, x1, y1, z1, r1, p1,w1, num - 1,newArcDivide))
+          {
+        	  cout << "2圆打断失败" << endl;
+              return false;
+          }
+       midPoint = newArcDivide[newArcDivide.size() / 2.0 + 1];
+       return true;
 }
 
 
@@ -284,7 +228,6 @@ bool ArcParser::getCircleDividePoint1(double x1, double y1, double z1, double r1
 //          arcDividePoint += newArcDivide;
 //        arcDividePoint.addAll(newArcDivide);    //加上新的
           return true;
-
 
 }
 

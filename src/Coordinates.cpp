@@ -13,16 +13,19 @@ using namespace std;
 #include <string>
 #include "robot_class/udp.h"
 //初始化列表
-Coordinates::Coordinates()
+Coordinates::Coordinates():conn(0)
 {
-	lastcurJ={1.112,1.32,1.111,1.121,1.111,1.111};
-	lastcurC={1.22,1.11};
+	lastcurJ={1,1,1,1,1,1};
+	lastcurC={1,1};
 }
 
 Coordinates::~Coordinates()
 {
 
-
+}
+void Coordinates::setConn(int conn)
+{
+   this->conn=conn;
 }
 void Coordinates::getPosition()
 {
@@ -48,7 +51,6 @@ void Coordinates::getPosition()
 	os << curC.c2 * 180 / pi;
 	str.append(",").append(os.str());
 	DylCommon::protocol_send1(str);      //回传坐标值
-//	cout << str << endl;
 	if(udp::IsOpenUdp)   //开启udp模式才回传坐标值
 	{
 		char jdata[1000];
@@ -62,7 +64,7 @@ void Coordinates::run()
 {
     getPosition();
     if(udp::IsOpenUdp)
-    usleep(50000);     //两秒钟回传一次
+    usleep(200000);     //两秒钟回传一次
     else
     usleep(200000);
 }

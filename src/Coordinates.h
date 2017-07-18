@@ -24,9 +24,11 @@ private:
     Joint lastcurJ;   //上一次的
     Coint lastcurC;
     ArrayXd xyzrpw;   //是一个数组类型
+    int conn;
     void getPosition();
 public:
     void run();
+    void setConn(int conn);
 };
 
 #endif /* SRC_COORDINATES_H_ */

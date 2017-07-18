@@ -18,7 +18,7 @@ public:
 	RoctorBar();
 	virtual ~RoctorBar();
 private:
-	bool IsFixedPoint;
+	TestOutputFile file;
 	AxisType axistype; //轴的类型
 	double speed;
 	bool runing;  //运动标志位
@@ -29,7 +29,6 @@ private:
 	double rate;
 	double lastspeed;
     void RoctorMove();
-    void Roctor1Move();
 	void SingleAxisMove();//单轴移动
 	Vector3d lastV;
     Vector3d lastA;
@@ -40,11 +39,13 @@ private:
     double ModifiedGear2JoySpeed;    //变位机构2速度
     double FixedPointRotationSpeed;     //定点转速度
     double FixedPointSwingSpeed;        //定点摆速度
-    double x,y,z;
     void clearSpeed();
 public:
 	void RoctorRun();
 	void setData(AxisType axistype,double speed);    //获取数据
+	bool IsSpeedUpDown(const Vector3d & nowV,const Vector3d & nowA);
+
+     //遥感移动
     void run();
 };
 

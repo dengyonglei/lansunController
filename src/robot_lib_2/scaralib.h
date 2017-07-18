@@ -16,7 +16,6 @@ using namespace std;
 #include <stdio.h>
 #include <stdlib.h>
 #include <list>
-#include <float.h>
 
 #define ZERO_THRESH 	(0.000001)
 #define pi 				M_PI
@@ -145,9 +144,6 @@ extern float RESOLUTION_ATT;
 //===========================坐标式器人正逆解算法
 Matrix4d coo_fk(Joint j);
 Joint coo_ik(Matrix4d matrix);
-Joint coo_ik(Matrix4d matrix, int p4, int p5);
-list<Joint> SolveJointsList_coo(Matrix4d matrix);
-Joint NewPositionJoints_coo(Matrix4d matrix, Joint last);
 
 //===========================关节式器人正逆解算法
 Matrix4d fk(Joint j);

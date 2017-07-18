@@ -23,9 +23,8 @@ Matrix4d fksolution(Joint j);
 // 逆解： 包含 焊枪标定值
 Matrix4d fksolutionPose(Joint j);//标定逆解
 Joint iksolution(Matrix4d Matrix, bool choose_j2);
-Joint NewPositionJointssolution(Matrix4d Matrix);
 // 封装逆解： 包含 焊枪标定值
-Joint NewPositionJointssolution(Matrix4d Matrix,Joint lastJ);
+Joint NewPositionJointssolution(Matrix4d Matrix);
 // 正解： 包含 焊枪标定值
 Matrix4d fksolutionBar(Joint j);
 // 逆解： 包含 焊枪标定值

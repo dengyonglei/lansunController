@@ -32,10 +32,8 @@ public:
 	void run();
 	bool  back_finished;
 	bool  IsConnnect;
-	bool  IsSendIOdata;
-
-private:
 	bool runing;//标志位
+private:
 	//数据接收
     void Datereceive();
     //校验函数
@@ -66,6 +64,7 @@ public:
     Torchcalibration torchcalibration;
     ModifiedGearDemarcate modifiedGearDemarcate; //变位机构
     bool  IsSend;    //是否处于数据下传中
+    void changeRPW(ArrayXd &xyzrpw);
 };
 
 #endif /* SRC_PARSER_H_ */

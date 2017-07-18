@@ -16,6 +16,9 @@ void moto_init(void);
 void moto_XYZclear(void);
 extern double Vspeed;
 //回零后各轴偏移指定距离，保证机械臂成一条线
+void robot_back(void);
+//工作状态下机械臂位姿
+void robot_start(void);
 //机械臂停止
 void robot_stop(void);
 void moto_SettingJ(char ch, double angle,double speed);
@@ -24,6 +27,7 @@ bool moto_runJAbs(Joint j, Coint c,double speed);
 void moto_runJoyAbs(Joint j, Coint c);
 //=====================================================插补线段运动控制
 void moto_runInterpolationAbs(Joint j, Coint c,float speed);
+//void moto_runJ(Joint j, Coint c,double speed);   //最大的速度去测试
 void moto_runJ(Joint j, Coint c,double speed);
 void getVList(unsigned long int *table);
 void delayNus(int n);
@@ -38,5 +42,9 @@ void J1RunToLimit(char ch, int speedL);
 
 //调用此函数时，一定要保证J4（枪回转），相对于初始位置左侧
 void allAxisInit(void);
+void allAxisInit(double speed);
+void moto_SettingJNew(char ch, double angle,double speed);
+void moto_runJNew(Joint j, Coint c,double speed,double JPUPR);
+void singleAxisSpeedLimit(Joint j,Coint c);
 
 #endif /* LANSUNV2_0_SRC_MOTO_H_ */

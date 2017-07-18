@@ -13,56 +13,41 @@ Matrix4d CHPA = Matrix4d::Zero();
 // 正解： 包含 焊枪标定值
 Matrix4d fksolution(Joint j)
 {
-    if(robotType == CoordRobot)
+	// 这里到底是 谁先谁后
+//	return fk(j) * TCF;
+
 	return coo_fk(j) * TCFmatrix;
-    else
-    return fk(j) * TCFmatrix;
 }
 
 Matrix4d fksolutionPose(Joint j)
 {
-	if(robotType == CoordRobot)
+	// 这里到底是 谁先谁后
+//	return fk(j) * TCF;
 	return coo_fk(j);
-	else
-	return fk(j);
 }
 // 逆解： 包含 焊枪标定值
 Joint iksolution(Matrix4d Matrix, bool choose_j2){
 
 	Matrix4d temp = Matrix4d::Zero();
+	// 这里到底是 谁先谁后
+//	temp = Matrix * TCF.inverse();
 	temp = Matrix * TCFmatrix.inverse();
-	if(robotType == CoordRobot)
 	return coo_ik(temp);
-	else
-    return NewPositionJoints(temp);
-}
-Joint NewPositionJointssolution(Matrix4d Matrix,Joint lastJ)
-{
-	Matrix4d temp = Matrix4d::Zero();
-	temp = Matrix * TCFmatrix.inverse();
-	if(robotType == CoordRobot)
-	return NewPositionJoints_coo(temp,lastJ);
-	else
-	return NewPositionJoints(temp);
 }
 Joint NewPositionJointssolution(Matrix4d Matrix)
 {
 	Matrix4d temp = Matrix4d::Zero();
+	// 这里到底是 谁先谁后
+//	temp = Matrix * TCF.inverse();
 	temp = Matrix * TCFmatrix.inverse();
-	if(robotType == CoordRobot)
 	return coo_ik(temp);
-	else
-	return NewPositionJoints(temp);
 }
 Matrix4d fksolutionBar(Joint j){
 	// 这里到底是 谁先谁后
 //	return fk(j) * TCF;
 	Matrix4d TCP = Matrix4d::Identity(4,4);
 	TCP.block(0,3,3,1) = TCFmatrix.block(0,3,3,1);
-	if(robotType == CoordRobot)
 	return coo_fk(j) * TCFmatrix;
-	else
-	return fk(j) * TCFmatrix;
 }
 // 逆解： 包含 焊枪标定值
 Joint iksolutionBar(Matrix4d Matrix, bool choose_j2){
@@ -71,20 +56,14 @@ Joint iksolutionBar(Matrix4d Matrix, bool choose_j2){
 	Matrix4d TCP = Matrix4d::Identity(4,4);
 	TCP.block(0,3,3,1) = TCFmatrix.block(0,3,3,1);
 	temp = Matrix * TCP.inverse();
-	if(robotType == CoordRobot)
 	return coo_ik(temp);
-	else
-	return NewPositionJoints(temp);
 }
 Joint NewPositionJointssolutionBar(Matrix4d Matrix){
 	Matrix4d temp = Matrix4d::Zero();
 	Matrix4d TCP = Matrix4d::Identity(4,4);
 	TCP.block(0,3,3,1) = TCFmatrix.block(0,3,3,1);
 	temp = Matrix * TCP.inverse();
-	if(robotType == CoordRobot)
 	return coo_ik(temp);
-	else
-	return NewPositionJoints(temp);
 }
 
 

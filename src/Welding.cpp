@@ -338,6 +338,7 @@ void Welding::receiveCircle1Points(const ArrayXd &p1, const Coint& c1,const Arra
 //圆接收数据
 void Welding::receiveCirclePoints(const ArrayXd &p1, const Coint& c1,const ArrayXd &p, const Coint& c, const ArrayXd &p2, const Coint& c2,double speed, int num)
 {
+
 	Element element;                 //元素线段
 	element.startXyzrpw = p1;        //起点xyzrpw
 	element.startC = c1;             //初始点
@@ -350,114 +351,44 @@ void Welding::receiveCirclePoints(const ArrayXd &p1, const Coint& c1,const Array
 	element.type = Arc;              //弧
 	element.Index = graph.size() + 1;
 	graph.push_back(element);        //加入点进去
-	vector<vector<double>> midPoint;
-	double startPos[6];
-	double midPos[6];
-	double endPos[6];
+	vector<double> midPoint;
+   //起点
+	double x1 = element.startXyzrpw[0];
+	double y1 = element.startXyzrpw[1];
+	double z1 = element.startXyzrpw[2];
 
-	for(int i = 0; i < 6; i++)
-	{
-		startPos[i] = element.startXyzrpw[i];
-		midPos[i] = element.midXyzrpw[i];
-		endPos[i] = element.endXyzrpw[i];
-	}
-	ArcParser::getCircleDividePoint(startPos[0],startPos[1],startPos[2],startPos[3],startPos[4],startPos[5],
-			midPos[0],midPos[1],midPos[2],endPos[0],endPos[1],endPos[2],endPos[3],endPos[4],endPos[5],midPoint);
-	ArrayXd xyzrpwp1 = p;
-	ArrayXd xyzrpwp2 = p;
-	ArrayXd xyzrpwp3 = p;
-	for(int i = 0; i < 6; i++)
-	{
-	    xyzrpwp1[i] = midPoint[0][i];
-	    xyzrpwp2[i] = midPoint[1][i];
-	    xyzrpwp3[i] = midPoint[2][i];
-	}
+    //终点
+	double x2 = element.midXyzrpw[0];
+	double y2 = element.midXyzrpw[1];
+	double z2 = element.midXyzrpw[2];
+    //末点
+	double x3 = element.endXyzrpw[0];
+	double y3 = element.endXyzrpw[1];
+	double z3 = element.endXyzrpw[2];
+    cout << "x1: " << x1 << " y1:  " << y1 << " z1:  " << z1 << " x2:  " << x2 << " y2:  " << y2 << " z2:  " << z2 << " x3: " << x3 << " y3: " << y3 << " z3: " << z3 << endl;
+    cout << "1111" << endl;
+	ArcParser::getCircleDividePoint(x1,y1,z1,0,0,0,x2,y2,z2,x3,y3,z3,0,0,0,midPoint);
+	cout << "2222" << endl;
 	Element element1; //元素线段
 	element1.startXyzrpw = p2;        //起点xyzrpw
 	element1.startC = c2;             //初始点
-	element1.midXyzrpw = xyzrpwp1;      //中点机构
-	element1.midC = c;                //中点
-	element1.endXyzrpw = xyzrpwp2;
+	element1.endXyzrpw = p1;          //末点
 	element1.endC = c1;               //末点变位机构
-	element1.speed = speed;           //速度
-	element1.num = num;               //序号
-	element1.type = Arc;              //弧
-	element1.Index = graph.size() + 1; //标号和序号不一致
-	graph.push_back(element1);        //加入点进去
-	Element element2; //元素线段
-	element2.startXyzrpw = xyzrpwp2;        //起点xyzrpw
-	element2.startC = c2;             //初始点
-	element2.midXyzrpw = xyzrpwp3;      //中点机构
-	element2.midC = c;                //中点
-	element2.endXyzrpw = p1;
-	element2.endC = c1;               //末点变位机构
-	element2.speed = speed;           //速度
-	element2.num = num;               //序号
-	element2.type = Arc;              //弧
-	element2.Index = graph.size() + 1; //标号和序号不一致
-	graph.push_back(element2);        //加入点进去
-}
-//圆接收数据
-void Welding::receiveCircle4Points(const ArrayXd &p1, const Coint& c1,const ArrayXd &p, const Coint& c, const ArrayXd &p2, const Coint& c2,const ArrayXd &p3, const Coint& c3,double speed, int num)
-{
-	Element element;                 //元素线段
-	element.startXyzrpw = p1;        //起点xyzrpw
-	element.startC = c1;             //初始点
-	element.endXyzrpw = p2;          //末点
-	element.endC = c2;               //末点变位机构
-	element.midXyzrpw = p;           //中点机构
-	element.midC = c;                //中点
-	element.speed = speed;           //速度
-	element.num = num;               //序号
-	element.type = Arc;              //弧
-	element.Index = graph.size() + 1;
-	graph.push_back(element);        //加入点进去
-	vector<vector<double>> midPoint;
-	double startPos[6];
-	double midPos[6];
-	double endPos[6];
-    double otherPos[6];
-	for(int i = 0; i < 6; i++)
-	{
-		startPos[i] = element.startXyzrpw[i];
-		midPos[i] = element.midXyzrpw[i];
-		endPos[i] = element.endXyzrpw[i];
-		otherPos[i] = p3[i];
-	}
-	ArcParser::getCircleDivide4Point(startPos[0],startPos[1],startPos[2],startPos[3],startPos[4],startPos[5],
-			midPos[0],midPos[1],midPos[2],endPos[0],endPos[1],endPos[2],endPos[3],endPos[4],endPos[5],otherPos[0],otherPos[1],otherPos[2],otherPos[3],otherPos[4],otherPos[5],midPoint);
-	ArrayXd xyzrpwp1 = p;
-	ArrayXd xyzrpwp2 = p;
-	for(int i = 0; i < 6; i++)
-	{
-	    xyzrpwp1[i] = midPoint[0][i];  //0.5d的点
-	    xyzrpwp2[i] = midPoint[1][i];  //0.5d的点
-	}
-	Element element1; //元素线段
-	element1.startXyzrpw = p2;        //起点xyzrpw
-	element1.startC = c2;             //初始点
-	element1.midXyzrpw = xyzrpwp1;      //中点机构
+	ArrayXd xyzrpw = p;
+	xyzrpw[0] = midPoint[0];
+	xyzrpw[1] = midPoint[1];
+	xyzrpw[2] = midPoint[2];
+	xyzrpw[3] = midPoint[3];
+	xyzrpw[4] = midPoint[4];
+	xyzrpw[5] = midPoint[5];
+    cout << xyzrpw << endl;
+	element1.midXyzrpw = xyzrpw;      //中点机构
 	element1.midC = c;                //中点
-	element1.endXyzrpw = p3;
-	element1.endC = c3;               //末点变位机构
 	element1.speed = speed;           //速度
 	element1.num = num;               //序号
 	element1.type = Arc;              //弧
-	element1.Index = graph.size() + 1; //标号和序号不一致
+	element.Index = graph.size() + 1; //标号和序号不一致
 	graph.push_back(element1);        //加入点进去
-
-	Element element2; //元素线段
-	element2.startXyzrpw = p3;        //起点xyzrpw
-	element2.startC = c3;             //初始点
-	element2.midXyzrpw = xyzrpwp2;      //中点机构
-	element2.midC = c;                //中点
-	element2.endXyzrpw = p1;
-	element2.endC = c1;               //末点变位机构
-	element2.speed = speed;           //速度
-	element2.num = num;               //序号
-	element2.type = Arc;              //弧
-	element2.Index = graph.size() + 1; //标号和序号不一致
-	graph.push_back(element2);        //加入点进去
 }
 
 
@@ -536,7 +467,6 @@ void Welding::init()                          //初始化函数
 	backFinished = false;
 	IsFireLinecPause = false;
 	IsModeChangeArcStrick = false;
-	lastJIsinit = false;
 }
 
 void Welding::back()

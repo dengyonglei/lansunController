@@ -34,7 +34,6 @@ public:
 	static vector<string> split( string str, string pattern);
 	static void getCurrentPosition(Joint&curJ,Coint &curC);
 	static bool IsCoordEqual(Joint curJ ,Joint lastcurJ,Coint curC,Coint  lastcurC);
-
 };
 
 

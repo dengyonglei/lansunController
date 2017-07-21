@@ -6,6 +6,7 @@
  */
 
 #include "Element.h"
+#include "robot_lib_2/SwingWelding.h"
 #include <fstream>
 Element::Element()
 {
@@ -25,6 +26,7 @@ Element::Element()
     Index = 0;
     IsArcStric = false;
     IsQuench = false;
+    swingpoints.clear();
    }
 
 Element::~Element()
@@ -121,6 +123,8 @@ bool Element::getInterpolations()   //µÃµ½²å²¹µã
 		  case MoveLine: getMoveLineInterpolations(); break;     //¿ÕÒÆÏß
 		  case FireLine: getLineInterpolations();     break;     //º¸½ÓÏß
 		  case Arc:      getArcInterpolations();      break;     //µÃµ½Ô²»¡²å²¹Ïß
+		  case SwingLine:getSwingLineInterpolations();break;   //µÃµ½°Úº¸Ïß
+		  default: break;
 		}
     }
 	catch(...)
@@ -140,6 +144,18 @@ double Element::getTwoLinesAngle(Element &line1,Element &line2)      //µÃµ½Á½ÌõÏ
 		return fabs(getTwoVector3AngleValue(v1, v2));
 }
 
+bool Element::getSwingLineInterpolations()
+{
+
+	list<MJCoint> abcdef = SwingWelding::PositionAttitudeLinearInterpolationTri(xyzrpw_2_pose(swingpoints[0]),xyzrpw_2_pose(swingpoints[1]),xyzrpw_2_pose(swingpoints[2]),xyzrpw_2_pose(swingpoints[3]),5);
+	 if(checkInterpolations(abcdef))  //Ð£ÑéÕýÈ·
+		{
+			interpolationPoints = abcdef;
+			return true;
+		}
+		else
+			return false;
+}
 
 
 

@@ -114,3 +114,4 @@ void DylCommon::protocol_send2(const string &str)
 	  else
 	     	return true;
  }
+

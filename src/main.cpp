@@ -37,7 +37,7 @@ double J5PUPR = 1111.1111111111112;
 double J6PUPR = 1111;
 double  J7PUPR = 1000;
 double  J8PUPR = 1000;
-RobotType robotType = JointRobot;
+RobotType robotType = CoordRobot;
 
 
 Joint lastJ = {0,0,0,0,0};
@@ -64,6 +64,9 @@ void splitStr(char *s, list<string> &strArray);
 void joinStr(vector<string>& strArray);
 int server_sockfd;
 //得到数据并解析
+
+
+
 void getDateParser();
 //函数运行
 void run();
@@ -74,7 +77,6 @@ void *thread_function2(void *arg);
 
 int main()
 {
-
 	version = "V2017 07 18 -3";	//版本号需要自己设定
 	// 初始化系统信息
 	initSystemState();
@@ -89,6 +91,25 @@ int main()
 			      0, 1, 0, 0,
 			      0, 0, 1, 0,
 			      0, 0, 0, 1;
+	if(udp::IsOpenUdp)
+		{
+			if(robotType == CoordRobot)
+			{
+			 TCFmatrix << 1, 0, 0,220,
+						0, 1, 0, -5,
+						0, 0, 1, -170,
+						0, 0, 0, 1;
+			}
+			else
+			{
+				POSITIONER <<  1, 0, 0, 700,
+							   0, 1, 0, -600,
+							   0, 0, 1, 0,
+							   0, 0, 0, 1;
+				dh =  233.924;
+			}
+
+			}
 	RESOLUTION = 10; 	//表示离散精度为0.1mm
 	RESOLUTION_ATT = 40;  //表示姿态离散精度为1/30
 	  float JAAA_min[6] = {-17000000.0, -17000000.0, -5000, -3600.0 / 180 * pi, -3600.0 / 180 * pi, -3600.0 / 180 * pi};

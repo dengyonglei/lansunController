@@ -10,11 +10,11 @@
 
 #include <sys/socket.h>
 #include <arpa/inet.h>
- string udp::udpAddress = "192.168.1.2";
+ string udp::udpAddress = "192.168.1.101";
  int  udp::udpsocket = 0;              //套接字
  int  udp::addr_len = sizeof(sockaddr_in);  //长度
  bool udp::IsOpenUdp = false;       //是否打开udp通信
- bool udp::IsBackCancle = false;    //是否回零取消 便于仿真
+ bool udp::IsBackCancle =false;    //是否回零取消 便于仿真
  sockaddr_in udp::udpaddr;    //udp的套接字
 udp::udp()
 {

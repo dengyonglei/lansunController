@@ -167,7 +167,8 @@ else if (cmd == "EH")
 
 		}
 }
-else if(cmd == "EB") {
+else if(cmd == "EB")
+{
 	PointType pointtype;
 	pointtype = PointType((int) parserdata[1]);
 	// debug
@@ -750,7 +751,7 @@ c2.c1 = parserdata[16] * pi / 180;
 c2.c2 = parserdata[17] * pi / 180;
 double speed = parserdata[18];
 int num = parserdata[19];
-if (parserdata[1] == 4 )   //圆弧
+if (parserdata[1] == 4 ||  parserdata[1] == 5)   //圆弧
 {
 	xyzrpw = xyzrpw2;  //把第二点定为中点
 	c = c2;
@@ -760,26 +761,6 @@ if (parserdata[1] == 4 )   //圆弧
 	c2.c2 = parserdata[25] * pi / 180;
 	speed = parserdata[26];
 	num = parserdata[27];
-}
-
-if(parserdata[1] == 5)
-{
-	xyzrpw = xyzrpw2;  //把第二点定为中点
-	c = c2;
-	for (int i = 18; i < 24; i++)    //第三个点 为末点
-		xyzrpw2[i - 18] = parserdata[i];
-	c2.c1 = parserdata[24] * pi / 180;
-	c2.c2 = parserdata[25] * pi / 180;
-	for (int i = 18; i < 24; i++)    //第三个点 为末点
-	xyzrpw2[i - 18] = parserdata[i];
-	c2.c1 = parserdata[24] * pi / 180;
-	c2.c2 = parserdata[25] * pi / 180;
-	for (int i = 26; i < 32; i++)    //第三个点 为末点
-		xyzrpw3[i - 26] = parserdata[i];
-	c3.c1 = parserdata[32] * pi / 180;
-    c3.c2 = parserdata[33] * pi / 180;
-	speed = parserdata[34];
-	num = parserdata[35];
 }
 switch ((int) parserdata[1])  //根据所传类型来保存数据点       0--空移线   1--插补线  4--圆弧线
 {
@@ -793,10 +774,28 @@ case 4:
 	welding.receiveArcPoints(xyzrpw1, c1, xyzrpw, c, xyzrpw2, c2, speed, num);
 	break;
 case 5:
-	welding.receiveCircle4Points(xyzrpw1, c1, xyzrpw, c, xyzrpw2, c2,xyzrpw3, c3, speed, num);
-//	welding.receiveCirclePoints(xyzrpw1, c1, xyzrpw, c, xyzrpw2, c2, speed, num);
-//	welding.receiveCircle1Points(xyzrpw1, c1, xyzrpw, c, xyzrpw2, c2, speed, num);
+    welding.receiveCirclePoints(xyzrpw1, c1, xyzrpw, c, xyzrpw2, c2, speed, num);
 	break;
+default: break;
+//case 7: //摆直线
+//    {
+//    	ArrayXd xyzrpw11 = ArrayXd::Zero(6);
+//    	for(int i = 2; i < 8; i++)
+//    		xyzrpw11[i - 2] = parserdata[i];
+//    	ArrayXd xyzrpw12 = ArrayXd::Zero(6);
+//		for(int i = 10; i < 16; i++)
+//			xyzrpw12[i - 10] = parserdata[i];
+//		ArrayXd xyzrpw13 = ArrayXd::Zero(6);
+//		for(int i = 16; i < 22; i++)
+//			xyzrpw13[i - 16] = parserdata[i];
+//		ArrayXd xyzrpw14 = ArrayXd::Zero(6);
+//		for(int i = 22; i < 28; i++)
+//			xyzrpw14[i - 22] = parserdata[i];
+//		speed = parserdata[28];
+//		num = parserdata[29];
+//		welding.receiveLinerSwingWeldingPoints(xyzrpw11,xyzrpw12,xyzrpw13,xyzrpw14,speed,num);
+//		break;
+//    }
 }
 }
 

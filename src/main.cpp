@@ -77,7 +77,7 @@ void *thread_function2(void *arg);
 
 int main()
 {
-	version = "V2017 07 18 -3";	//版本号需要自己设定
+	version = "V2017 07 21 -1";	//版本号需要自己设定
 	// 初始化系统信息
 	initSystemState();
 

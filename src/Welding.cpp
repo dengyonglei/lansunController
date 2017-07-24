@@ -44,7 +44,7 @@ void Welding::move()
 	}
 	for (int i = graphInex; i < (int) graph.size(); i++) //遍历整个图形数据
 	{
-		double acctimes = 200;          //加速次数
+		double acctimes = 100;          //加速次数
 		double dectimes = 100;	        //减速次数
 		speed = graph[i].speed;   //获取当前速度
 //		acctimes = dectimes = 50 * (speed / 1000.0) * rate;   //获取加减速步数
@@ -136,6 +136,8 @@ void Welding::move()
 			runtaskNum++;
 			//加速过程
 			double speed1 = speed * rate; //速度旋转按钮来改变速度的大小得到的一个初始速度
+			if (speed1 < 3)
+			speed1 = 3;
 			//当前速度小于初始设定速度时而且未在减速范围内会一直加速，直到加速为止
 			if ((currentSpeed < speed1) && (linesize - runtaskNum) > dectimes)
 			{//两种方式的加减速都要考虑
@@ -146,8 +148,6 @@ void Welding::move()
 			//速度特别小，就不做加减速控制啦
 			if (speed1 <= minSpeed)
 			{   //不做加减速控制
-				if (speed1 < 1)
-					speed1 = 1;
 				currentSpeed = speed1;
 			}
 			//减速过程(两种情况需要减速控制)
@@ -524,7 +524,7 @@ void Welding::back()
 	}
 	for (int i = graphInex; i >= 0; i--) //逆序遍历
 	{
-		double acctimes = 200;          //加速次数
+		double acctimes = 100;          //加速次数
 		double dectimes = 100;	        //减速次数
 		speed = graph[i].speed;   //获取当前速度
 //	    acctimes = dectimes = 50 * (speed / 1000.0) * rate;   //获取加减速步数
@@ -595,6 +595,8 @@ void Welding::back()
 			runtaskNum++;
 			//加速过程
 			double speed1 = speed * rate; //速度旋转按钮来改变速度的大小得到的一个初始速度
+			if (speed1 < 3)
+				speed1 = 3;
 			//当前速度小于初始设定速度时而且未在减速范围内会一直加速，直到加速为止
 			if ((currentSpeed < speed1) && (linesize - runtaskNum) > dectimes) {//两种方式的加减速都要考虑
 				currentSpeed += ((speed1 - minSpeed) / acctimes);
@@ -604,8 +606,7 @@ void Welding::back()
 			//速度特别小，就不做加减速控制啦
 			if (speed1 <= minSpeed)
 			{   //不做加减速控制
-				if (speed1 < 1)
-					speed1 = 1;
+
 				currentSpeed = speed1;
 			}
 			//减速过程(两种情况需要减速控制)

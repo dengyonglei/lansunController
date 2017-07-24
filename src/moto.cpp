@@ -659,6 +659,7 @@ void moto_runJoy(Joint j, Coint c)
 														 j5pu * j5pu + j6pu * j6pu + \
 														 j7pu * j7pu + j8pu * j8pu));
 
+
 	MOT->J1step = j1pu;
 	MOT->J2step = j2pu;
 	MOT->J3step = j3pu;

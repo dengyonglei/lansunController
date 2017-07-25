@@ -680,7 +680,53 @@ void moto_runJoy(Joint j, Coint c)
 
 }
 
+void moto_runJoy1(int ch)
+{
 
+	MOT->field.D3 = 'S';
+	Joint j = {0,0,0,0,0,0};
+	switch(abs(ch))
+	{
+	   case 1: j.j1 = 9999 * ch; break;
+	   case 2: j.j2 = 9999 * ch / 2.0; break;
+	   case 3: j.j3 = 9999 * ch / 3.0; break;
+	   default: break;
+	}
+	long long int j1pu = j.j1  * J1PUPR;
+	long long int j2pu = j.j2  * J2PUPR;
+	long long int j3pu = j.j3  * J3PUPR;
+	long long int j4pu = 0;
+	long long int j5pu = 0;
+	long long int j6pu = 0;
+	long long int j7pu = 0;
+	long long int j8pu = 0;
+
+
+
+	unsigned long int contia = (unsigned long int)(sqrtf(j1pu * j1pu + j2pu * j2pu + \
+														 j3pu * j3pu + j4pu * j4pu + \
+														 j5pu * j5pu + j6pu * j6pu + \
+														 j7pu * j7pu + j8pu * j8pu));
+
+	MOT->J1step = j1pu;
+	MOT->J2step = j2pu;
+	MOT->J3step = j3pu;
+	MOT->J4step = j4pu;
+	MOT->J5step = j5pu;
+	MOT->J6step = j6pu;
+	MOT->J7step = j7pu;
+	MOT->J8step = j8pu;
+	MOT->contia = contia;
+	MOT->field.D3 = 'R';
+
+	while(MOT->field.D3 == 'N'&&!Variable::IsStop)
+	{
+
+		MOT->Tt = (unsigned long int)(6250000.0 / (nowSpeed));
+
+	}
+
+}
 //指定轴移动指定角度
 //入口参数：	ch		指定轴，取值范围1,2,3,4,5,6,7,8
 //			angle	旋转角度,单位度(第三轴单位为mm)
@@ -882,8 +928,6 @@ void moto_XYZclear(void)
 	}
 
 	robot_stop();
-
-
 }
 
 void robot_stop(void)
@@ -900,7 +944,7 @@ void robot_stop(void)
 	MOT->J8step = 0;
 	MOT->contia = 0;
 	MOT->Tt = 0xFFFF;
-    usleep(50000);
+    usleep(100000);
 	MOT->field.D3 = 'R';
 }
 

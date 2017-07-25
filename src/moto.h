@@ -20,6 +20,7 @@ extern double Vspeed;
 void robot_stop(void);
 void moto_SettingJ(char ch, double angle,double speed);
 void moto_runJoy(Joint j, Coint c);
+void moto_runJoy1(int ch);
 bool moto_runJAbs(Joint j, Coint c,double speed);
 void moto_runJoyAbs(Joint j, Coint c);
 //=====================================================插补线段运动控制

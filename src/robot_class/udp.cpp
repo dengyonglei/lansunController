@@ -18,7 +18,7 @@
  sockaddr_in udp::udpaddr;    //udpµÄÌ×½Ó×Ö
 udp::udp()
 {
-	// TODO Auto-generated constructor stub
+  // TODO Auto-generated constructor stub
 }
 
 udp::~udp()

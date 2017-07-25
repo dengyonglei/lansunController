@@ -22,6 +22,8 @@ private:
 	AxisType axistype; //轴的类型
 	double speed;
 	bool runing;  //运动标志位
+	bool runtype;
+	int ch;
 	bool Joyruning;//摇杆运动标志位
 	Joint targetJ;
 	Coint targetC;
@@ -29,7 +31,6 @@ private:
 	double rate;
 	double lastspeed;
     void RoctorMove();
-    void Roctor1Move();
 	void SingleAxisMove();//单轴移动
 	Vector3d lastV;
     Vector3d lastA;

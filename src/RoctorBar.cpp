@@ -15,7 +15,8 @@ RoctorBar::RoctorBar() :
 	lastV = {0,0,0};
 	lastA = {0,0,0};
 	IsFixedPoint = false;
-
+	runtype = false;
+	ch = 0;
 	x = 0;
 	y = 0;
 	z = 0;
@@ -128,12 +129,26 @@ void RoctorBar::RoctorMove()
 	double VVVAAA1 = ((double) (VVVCCC1 - VVVSSS1) / (VADDTIMES1 - 1) / ADDTIM1); //加速度
 	while (true)
 	{
+		ch = 0;
         DylCommon::getCurrentPosition(currentJ,currentC);   //得到当前的坐标值
 		Vector3d lastV(0,0,0);
 		if(robotType == JointRobot)   //如果是关节式就采用这种方式去得到值
 		lastV << XAxisSpeed / ss, YAxisSpeed / ss, ZAxisSpeed / ss;
 		else
-		lastV << XAxisSpeed / ss * 10000, YAxisSpeed / ss * 10000, ZAxisSpeed / ss * 10000;
+		{
+			if(XAxisSpeed < 0)
+				ch = -1;
+			if(XAxisSpeed > 0)
+				ch = 1;
+			if(YAxisSpeed < 0)
+				ch = -2;
+			if(YAxisSpeed > 0)
+				ch = 2;
+			if(ZAxisSpeed < 0)
+				ch = -3;
+			if(ZAxisSpeed > 0)
+				ch = 3;
+		}
 		Vector3d lastA;
 		lastA << 0, FixedPointSwingSpeed / ss, FixedPointRotationSpeed / ss;
 		Matrix4d new_robot_position = transl(lastV) * fksolution(currentJ);
@@ -177,8 +192,6 @@ void RoctorBar::RoctorMove()
 		}
 	}
 	cout << "摇杆移动结束" << endl;
-	targetJ = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-	targetC = {0,0};
 	Joyruning = false;
 	robot_stop();
 }
@@ -188,6 +201,9 @@ void RoctorBar::RoctorRun()
 {
 	while (targetJ.ISOK && Joyruning)
 	{
+		if(ch)
+		moto_runJoy1(ch);
+		else
 		moto_runJoy(targetJ, targetC);
 	}
 }

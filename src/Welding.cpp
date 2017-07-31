@@ -9,7 +9,7 @@
 #include "DlyCommon.h"
 #include "Welding.h"
 #include "robot_lib_2/CircleParser.h"
-#define  ARCSTRICK   0xfffffff7       //起弧
+#define  ARCSTRICK   0xfffffff0       //起弧
 #define  ARCQUENCH   0xffffffff       //熄弧
 Welding::Welding() :runing(false), rate(1), IsFireMode(false)
 {
@@ -25,6 +25,8 @@ void Welding::move()
 {
 	if (!runing)  //没有收到焊接运行的指令
 		return;
+	ofstream out("time.txt");
+	out << "   test speed  \n";
 	double minSpeed = 200;          //最小速度
 	double currentSpeed = minSpeed; //当前速度
 	double speed;                   //目前速度
@@ -42,8 +44,10 @@ void Welding::move()
 		interpolationIndex = 0;
 		graphInex = 0;
 	}
+
 	for (int i = graphInex; i < (int) graph.size(); i++) //遍历整个图形数据
 	{
+
 		double acctimes = 100;          //加速次数
 		double dectimes = 100;	        //减速次数
 		speed = graph[i].speed;   //获取当前速度
@@ -95,6 +99,11 @@ void Welding::move()
 		for (; iter != abcdef.end(); iter++)
 		{
 			//表明是第一条
+			struct timeval start,stop,diff;
+			memset(&start,0,sizeof(timeval));
+			memset(&stop,0,sizeof(timeval));
+			memset(&diff,0,sizeof(timeval));
+			gettimeofday(&start,0);
 			if (graph[i].type == MoveLine)   //如果是空移线
 			{
 				iter = abcdef.end();
@@ -112,6 +121,7 @@ void Welding::move()
 					return;
 				}
 				cout << graph[i].num << "线段快速移动完成 " << endl;
+				out << graph[i].num << "线段快速移动完成 " << endl;
 				break;
 			}
 			if (Variable::IsStop)   //暂停
@@ -127,11 +137,11 @@ void Welding::move()
 						<< interpolationIndex << endl;
 				return;
 			}
-//            if(currentSpeed != lastSpeed)
-//            {
-//            	cout << "speed: " << currentSpeed << endl;
-//            	lastSpeed = currentSpeed;
-//            }
+            if(currentSpeed != lastSpeed)
+            {
+            	cout << "speed: " << currentSpeed << endl;
+            	lastSpeed = currentSpeed;
+            }
 			moto_runInterpolationAbs((iter->mj).j, (iter->mj).c, currentSpeed);
 			runtaskNum++;
 			//加速过程
@@ -169,6 +179,9 @@ void Welding::move()
 				if (currentSpeed < minSpeed)
 					currentSpeed = minSpeed;
 			}
+			gettimeofday(&stop,0);
+			DylCommon::time_substract(&diff,&start,&stop);
+			out << (int)diff.tv_sec << "    " <<  (int)diff.tv_usec << "\n";
 		}
 		//1.处于焊接模式 2.没有起弧的状态 3.是插补线
 		if (!arcStrickStatic)
@@ -226,6 +239,7 @@ void Welding::move()
 
 	}
 	runing = false;
+	out.close();
 }
 
 //开始起弧，工艺性要做一下

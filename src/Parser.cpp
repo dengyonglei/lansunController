@@ -88,7 +88,6 @@ else if (cmd == "E1")
 	return;
 } else if (cmd == "E2")
 {
-
 	cout << "脉冲当量下传" << endl;
 	//脉冲当量设置数据
 	J1PUPR = parserdata[1];
@@ -98,7 +97,6 @@ else if (cmd == "E1")
 	J5PUPR = parserdata[5];
 	J7PUPR = parserdata[6];
 	J8PUPR = parserdata[7];
-
 	return;
 } else if (cmd == "E3") {
 	PointType pointtype;

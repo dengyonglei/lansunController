@@ -77,7 +77,7 @@ void *thread_function2(void *arg);
 
 int main()
 {
-	version = "V2017 07 25 -2";	//版本号需要自己设定
+	version = "V2017 07 31 -2";	//版本号需要自己设定
 	// 初始化系统信息
 	initSystemState();
 
@@ -108,10 +108,9 @@ int main()
 							   0, 0, 0, 1;
 				dh =  233.924;
 			}
-
 			}
 	RESOLUTION = 10; 	//表示离散精度为0.1mm
-	RESOLUTION_ATT = 40;  //表示姿态离散精度为1/30
+	RESOLUTION_ATT = 20;  //表示姿态离散精度为1/30
 	  float JAAA_min[6] = {-17000000.0, -17000000.0, -5000, -3600.0 / 180 * pi, -3600.0 / 180 * pi, -3600.0 / 180 * pi};
 	  float JAAA_max[6] = { 17000000.0,  17000000.0,   5000,  3600.0 / 180 * pi, 3600.0 / 180 * pi,  3600.0 / 180 * pi};
 	for(int i = 0; i < 6; i++)

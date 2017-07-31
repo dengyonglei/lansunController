@@ -26,7 +26,7 @@ void Welding::move()
 	if (!runing)  //没有收到焊接运行的指令
 		return;
 	ofstream out("time.txt");
-	out << "   test speed  \n";
+	out << "***********************速度测试***************************" ;
 	double minSpeed = 200;          //最小速度
 	double currentSpeed = minSpeed; //当前速度
 	double speed;                   //目前速度
@@ -95,6 +95,7 @@ void Welding::move()
 		char str[100];
 		sprintf(str, "DE,4,%d", graph[i].num);
 		cout << "*********" << graph[i].Index << "线运动*********" << endl;
+		out << "*********" << graph[i].Index << "线运动*********" << endl;
 		DylCommon::protocol_send(str);
 		for (; iter != abcdef.end(); iter++)
 		{
@@ -109,6 +110,7 @@ void Welding::move()
 				iter = abcdef.end();
 				iter--;
 				cout << graph[i].num << "线段快速移动" << endl;
+				out << graph[i].num << "线段快速移动" << endl;
 				moto_runJAbs((iter->mj).j, (iter->mj).c, 5000);
 				if (Variable::IsStop) //暂停
 				{
@@ -239,6 +241,7 @@ void Welding::move()
 
 	}
 	runing = false;
+	out << "***********************速度测试完成*************************" << endl;
 	out.close();
 }
 

@@ -128,4 +128,17 @@ bool CircleParser::getCenterCoordAndRadius(double x1, double y1, double z1,doubl
    return true;
 }
 
+double CircleParser::getArcLength(double x1, double y1, double z1,double x2, double y2, double z2, double x3, double y3, double z3)
+{
+	double x0,y0,z0,r;
+	getCenterCoordAndRadius(x1,y1,z1,x2,y2,z2,x3,y3,z3,x0,y0,z0,r);
+	 double OAOB = (x1 - x0) * (x2 - x0) + (y1 - y0) * (y2 - y0) + (z1 - z0) * (z2 - z0);
+	 double OBOC = (x2 - x0) * (x3 - x0) + (y2 - y0) * (y3 - y0) + (z2 - z0) * (z3 - z0);
+	 double angle1 = acos(OAOB / (r * r));
+	 double angle2 = acos(OBOC / (r * r));
+	 double angle = (angle1 + angle2);
+	 cout << "Ô²ÐÄ½Ç£º" << angle * 180 / pi << endl;
+	 cout << "°ë¾¶£º" << r << endl;
+	 return angle * r;
+}
 

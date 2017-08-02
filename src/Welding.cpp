@@ -26,7 +26,7 @@ void Welding::move()
 	if (!runing)  //没有收到焊接运行的指令
 		return;
 	ofstream out("time.txt");
-	out << "***********************速度测试***************************" ;
+	out << "***********************速度测试***************************\n" ;
 	double minSpeed = 200;          //最小速度
 	double currentSpeed = minSpeed; //当前速度
 	double speed;                   //目前速度
@@ -47,11 +47,15 @@ void Welding::move()
 
 	for (int i = graphInex; i < (int) graph.size(); i++) //遍历整个图形数据
 	{
-
+		struct timeval start1,stop1,diff1;
+		memset(&start1,0,sizeof(timeval));
+		memset(&stop1,0,sizeof(timeval));
+		memset(&diff1,0,sizeof(timeval));
+		gettimeofday(&start1,0);
 		double acctimes = 100;          //加速次数
 		double dectimes = 100;	        //减速次数
 		speed = graph[i].speed;   //获取当前速度
-//		acctimes = dectimes = 50 * (speed / 1000.0) * rate;   //获取加减速步数
+		acctimes = dectimes = 50 * (speed / 1000.0) * rate;   //获取加减速步数
 		if (acctimes < 1)
 			acctimes = dectimes = 1;
 		//起弧条件
@@ -95,7 +99,9 @@ void Welding::move()
 		char str[100];
 		sprintf(str, "DE,4,%d", graph[i].num);
 		cout << "*********" << graph[i].Index << "线运动*********" << endl;
-		out << "*********" << graph[i].Index << "线运动*********" << endl;
+		out << "*********************" << graph[i].num << "线运动上位机标号***************************" << endl;
+		out << "*********************" << graph[i].Index << "线运动引号*******************************" << endl;
+	    out << "*********" <<"类型： " << graph[i].type << " 插补数:  " << graph[i].interpolationPointsIndexs.size() <<"   *********"<<endl;
 		DylCommon::protocol_send(str);
 		for (; iter != abcdef.end(); iter++)
 		{
@@ -114,7 +120,6 @@ void Welding::move()
 				moto_runJAbs((iter->mj).j, (iter->mj).c, 5000);
 				if (Variable::IsStop) //暂停
 				{
-
 					Variable::IsStop = false;
 					interpolationIndex = 0;
 					graphInex = graph[i].Index - 1;        //线的序号保存下来
@@ -145,6 +150,7 @@ void Welding::move()
             	lastSpeed = currentSpeed;
             }
 			moto_runInterpolationAbs((iter->mj).j, (iter->mj).c, currentSpeed);
+			out <<  "传入速度：" << currentSpeed << "     ";
 			runtaskNum++;
 			//加速过程
 			double speed1 = speed * rate; //速度旋转按钮来改变速度的大小得到的一个初始速度
@@ -183,7 +189,7 @@ void Welding::move()
 			}
 			gettimeofday(&stop,0);
 			DylCommon::time_substract(&diff,&start,&stop);
-			out << (int)diff.tv_sec << "    " <<  (int)diff.tv_usec << "\n";
+			out << "0.1mm 时间： "<< (int)diff.tv_sec << "s " <<  (int)diff.tv_usec << "us  总时间：" << (int)diff.tv_sec *1000000 + (int)diff.tv_usec<<"us   实际速度："<< 6000000.0 /(double)((int)diff.tv_sec *1000000 + (int)diff.tv_usec)<<"mm/min\n";
 		}
 		//1.处于焊接模式 2.没有起弧的状态 3.是插补线
 		if (!arcStrickStatic)
@@ -230,7 +236,9 @@ void Welding::move()
 				IsModeChangeArcStrick = false;
 			}
 		}
-
+		gettimeofday(&stop1,0);
+		DylCommon::time_substract(&diff1,&start1,&stop1);
+		out << "线段总时间： "<< (int)diff1.tv_sec << "s " <<  (int)diff1.tv_usec << "us  总时间：" << (int)diff1.tv_sec *1000000 + (int)diff1.tv_usec<<"us   实际速度："<< (6000000.0 * graph[i].interpolationPointsIndexs.size())/(double)((int)diff1.tv_sec *1000000 + (int)diff1.tv_usec)<<"mm/min\n";
 	}
 	IOM->DATA = ARCQUENCH;       //熄弧;
 	if (runing)

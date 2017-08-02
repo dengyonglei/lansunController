@@ -8,11 +8,14 @@
 #include "Element.h"
 #include "robot_lib_2/SwingWelding.h"
 #include <fstream>
+#include <math.h>
+#include "robot_lib_2/CircleParser.h"
 Element::Element()
 {
 	// TODO Auto-generated constructor stub
 	angle = 180;
 	num = 0;
+	drate = 1;
 	speed = 3000;
 	type = MoveLine;
 	startC = {0.0,0.0};
@@ -66,6 +69,7 @@ bool Element::getArcInterpolations()
 bool Element::checkInterpolations(list<MJCoint> abcdef)
 {
 	int i = 0;
+	abcdef.pop_front(); //移除第一个点
 	list<MJCoint>::iterator iter = abcdef.begin();
     if(!lastJIsinit)
     {
@@ -86,8 +90,9 @@ bool Element::checkInterpolations(list<MJCoint> abcdef)
 		p.mj = *iter;
 		p.index = i;
 		interpolationPointsIndexs.push_back(p);
-		}
-		return true;
+	}
+	drate = getSpeedrate();
+	return true;
 }
 void Element::getMoveLineInterpolations()
 {
@@ -156,6 +161,32 @@ bool Element::getSwingLineInterpolations()
 		else
 			return false;
 }
-
+double Element::getSpeedrate()
+{
+	 double d = 1;
+	 double x1 = startXyzrpw[0];
+	 double y1 = startXyzrpw[1];
+	 double z1 = startXyzrpw[2];
+	 double x2 = endXyzrpw[0];
+	 double y2 = endXyzrpw[1];
+	 double z2 = endXyzrpw[2];
+     if(type == FireLine)
+     {
+    	 d = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1));
+    	 cout << "直线： " << d << endl;
+    	 return (double)interpolationPointsIndexs.size() / (d * 10.0);
+     }
+     else if(type == Arc)
+     {
+    	 double x = midXyzrpw[0];
+		 double y = midXyzrpw[1];
+		 double z = midXyzrpw[2];
+        d = CircleParser::getArcLength(x1,y1,z1,x,y,z,x2,y2,z2);
+        cout << "圆弧：" << d << endl;
+        return (double)interpolationPointsIndexs.size() / (d * 10.0);
+     }
+     else
+    	 return 1;
+}
 
 

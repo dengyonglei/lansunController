@@ -54,7 +54,7 @@ char sendbuf[BUFFER_SIZE];        //发送缓冲
 char recvbuf[BUFFER_SIZE];        //接受缓冲
 int recvlen;
 int socket_descriptor;
-
+ofstream writefile;
 unsigned long int vddTable[VADDTIMES];     //速度列表
 string joinstr = "";
 unsigned long int nowSpeed = VVVSSS;                   //1000步
@@ -78,11 +78,10 @@ void *thread_function2(void *arg);
 int main()
 {
 
-	version = "V2017 07 31 -1";	//版本号需要自己设定
+	version = "V2017 07 31 -1111";	//版本号需要自己设定
+	ofstream writefile("write.txt");
 	// 初始化系统信息
 	initSystemState();
-
-
 	dh =  0;
 	TCFmatrix << 1, 0, 0,0,
 				0, 1, 0, 0,
@@ -111,7 +110,7 @@ int main()
 			}
 			}
 	RESOLUTION = 10; 	//表示离散精度为0.1mm
-	RESOLUTION_ATT = 20;  //表示姿态离散精度为1/30
+	RESOLUTION_ATT = 50;  //表示姿态离散精度为1/30
 	  float JAAA_min[6] = {-17000000.0, -17000000.0, -5000, -3600.0 / 180 * pi, -3600.0 / 180 * pi, -3600.0 / 180 * pi};
 	  float JAAA_max[6] = { 17000000.0,  17000000.0,   5000,  3600.0 / 180 * pi, 3600.0 / 180 * pi,  3600.0 / 180 * pi};
 	for(int i = 0; i < 6; i++)

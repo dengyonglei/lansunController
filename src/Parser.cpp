@@ -385,6 +385,7 @@ else if (cmd == "C6")
 else if (cmd == "C7")
 {
 	cout << "全部回零成功后的点位坐标" << endl;
+	writefile << "全部回零成功后的点位坐标" << endl;
 	moto_init();
 	back_finished = true;
 	return;
@@ -449,6 +450,7 @@ else if (cmd == "D1")
 else if (cmd == "D2")
 {
 	cout << "起弧行弧指令" << endl;
+	writefile << "起弧行弧指令" << endl;
 	//把起弧行弧参数设置进去   延时和标号的作用
 	welding.receiveArcStrickData(parserdata[1],parserdata[6]);
 	return;
@@ -456,12 +458,14 @@ else if (cmd == "D2")
 else if (cmd == "D3")
 {
 	cout << "熄弧指令" << endl;
+	writefile << "熄弧指令" << endl;
 	welding.receiveArcQuenchData(parserdata[3]);
 	return;
 }
 else if (cmd == "D4")    //开始下传的指令
 {
 	cout << "开始下传图形数据" << endl;
+	writefile << "开始下传图形数据" << endl;
 	IsSend = true;    //发送过程中是不进行校验心跳指令的
 	welding.init();
 	DylCommon::protocol_send("D4,3");
@@ -483,6 +487,7 @@ else if (cmd == "D5")
 else if (cmd == "D7")
 {
 	cout << "开始焊接" << endl;
+	writefile << "开始焊接" << endl;
 	if (IsCutting && robotType == CoordRobot)
 	{
 		Joint j;
@@ -500,8 +505,10 @@ else if (cmd == "D7")
 			lastJIsinit = true;
 		}
 		cout << "改变姿态" << endl;
+		writefile << "改变姿态" << endl;
 		moto_runJAbs(j, c, 4000);
 		cout << "改变姿态完成" << endl;
+		writefile << "改变姿态完成" << endl;
 		moto_XYZclear();//XYZ数据清零
 		IsCutting = false;
 		usleep(1000);
@@ -518,41 +525,49 @@ else if (cmd == "D9") //停止指令
 {
 	Variable::IsStop = true;
 	cout << "停止运动" << endl;
+	writefile << "停止运动" << endl;
 	return;
 }
 else if (cmd == "DA")
 {
 	cout << "速度调整指令" << endl;
+	writefile << "速度调整指令" << endl;
 	welding.rate = parserdata[1] / 9999.0;
 	return;
 }
 else if (cmd == "DG")
 {
 	cout << "模式切换" << endl;
+	writefile << "模式切换" << endl;
 	welding.IsFireMode = parserdata[1];   //焊接模式的状态
 	return;
 }
 else if (cmd == "DH")
 {
 	cout << "后退指令" << endl;
+	writefile << "后退指令" << endl;
 	welding.backruning = true;
 	return;
 }
 /***************F系列指令解析***********************/
 else if (cmd == "F0")
 {
+
 	cout << "IO口指令下传" << endl;
+	writefile << "IO口指令下传" << endl;
 	ioparameter.setData(parserdata[1]);
 	return;
 }
 else if (cmd == "F5")
 {
 	cout << "系统恢复指令" << endl;
+	writefile << "系统恢复指令" << endl;
 	DylCommon::protocol_send("F5,3");
 	return;
 } else if (cmd == "F7")
 {
 	cout << "版本号显示指令" << endl;
+	writefile << "版本号显示指令" << endl;
 	DylCommon::protocol_send("F7,4," + version);
 	return;
 }
@@ -695,9 +710,14 @@ Datereceive();
 	if (cmd != "EF")
 	{
 		cout << cmd << " ";
+		writefile << cmd << " ";
 	    for (int i = 0; i < (int) parserdata.size(); i++)
+	    {
 		cout << parserdata[i] << " ";   //把数据打印出来
+	    writefile << parserdata[i] << " ";   //把数据打印出来
+	    }
 	    cout << endl;
+	    writefile << endl;
 	}
 if (!check()) //校验不通过
 {

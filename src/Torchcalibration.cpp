@@ -105,19 +105,24 @@ void Torchcalibration::implementGetTCFMatrix() {
 //		  moto_runJAbs(mjc.j,mjc.c);
 		}
 
-	} else if (pointType == SixthPoint) {
+	}
+	else if (pointType == SixthPoint)
+	{
 		if (TCF_BOOL != 15) //1111位标志
-				{
+		{
 			cout << "发送弹框6" << endl;
 			DylCommon::protocol_send("E7,3");
-		} else {
+		}
+		else
+		{
 			P6 = getCurrentJCoint().m;
 			cout << "P6" << P6 << endl;
 		}
 		// debug
 //		cout << "tcf:"<< getTCFMatrix(P1, P2, P3, P4, P5, P6) << endl;
 	}
-	else if (pointType == Complete) {
+	else if (pointType == Complete)
+	{
 		cout << " Complete6" << endl;
 		TCFmatrix = getTCFMatrix(P1, P2, P3, P4, P5, P6);
 		// debug
@@ -176,7 +181,7 @@ void Torchcalibration::Iscoplane()
 		// 发送 警告: 同一平面  数据 不可用
 		TCF_BOOL=3;
 		cout << "error : P1,P2,P3,P4 in the same plane" << endl;
-		DylCommon::protocol_send("[E4,3,231]");
+		DylCommon::protocol_send("E4,3");
 	}
 
 }

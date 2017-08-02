@@ -279,7 +279,7 @@ extern double interpolationSpeed;
 extern Matrix4d TCFmatrix;
 
 extern bool TESKVOID;
-
+extern ofstream writefile;
 
 
 #endif /* LANSUNV2_0_SRC_COMMON_H_ */

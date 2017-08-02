@@ -185,9 +185,6 @@ void RoctorBar::RoctorRun()
 {
 	while (targetJ.ISOK && Joyruning)
 	{
-//		if(ch)
-//		moto_runJoy1(ch);
-//		else
 		moto_runJoy(targetJ, targetC);
 	}
 }

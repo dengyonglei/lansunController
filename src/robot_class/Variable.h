@@ -7,8 +7,6 @@
 
 #ifndef ROBOT_CLASS_VARIABLE_H_
 #define ROBOT_CLASS_VARIABLE_H_
-
-
 class Variable
 {
 public:
@@ -22,6 +20,7 @@ public:
 	static bool SmallArmDirectionChange;
 	static bool UpDownAxisDirectionChange;       //旋转轴方向改变
 	static bool Islimit;                        //是否在限位位置
+
 };
 
 #endif /* ROBOT_CLASS_VARIABLE_H_ */

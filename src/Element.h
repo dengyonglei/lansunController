@@ -13,8 +13,8 @@ using namespace std;
 const int MobileTransfinite = -1;
 enum ElementType
 {
-	MoveLine,  //空移线
-	FireLine,  //焊接线
+	MoveLine = 0,  //空移线
+	FireLine ,  //焊接线
 	Arc,        //圆弧
    	SwingLine,  //摆直线
 	SwingArc //摆圆弧
@@ -41,6 +41,7 @@ public:
 	Element();
 	virtual ~Element();
 	double angle; //角度
+	double drate;
 	int num;      //序号
 	double speed; //速度
 	ElementType type;   //线的类型
@@ -60,6 +61,7 @@ public:
 	bool getArcInterpolations();        //得到圆弧的插补点
 	bool getInterpolations();             //得到插补点
 	bool getSwingLineInterpolations();   //得到摆焊插补点
+	double getSpeedrate();
 	static double getTwoLinesAngle(Element &line1,Element &line2);   //得到两条线之间的夹角
 	int Index; //线段的索引值  与序号区别开
 	bool IsArcStric;

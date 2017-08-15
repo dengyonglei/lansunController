@@ -13,11 +13,12 @@
 #include "robot_class/udp.h"
 extern string lastcmd;
 extern Parameter structParameter;
-Parser::Parser() :
-		sdata(""), back_finished(false), IsConnnect(true), runing(false), IsClear(
+Parser::Parser() :sdata(""), back_finished(false), IsConnnect(true), runing(false), IsClear(
 				false), IsCutting(false) {
 	IsSend = false;
 	IsSendIOdata = false;
+	isChange = false;
+
 }
 
 Parser::~Parser() {
@@ -488,6 +489,11 @@ else if (cmd == "D7")
 {
 	cout << "开始焊接" << endl;
 	writefile << "开始焊接" << endl;
+	if(welding.pause)
+	{
+		moto_runJAbs(welding.pauseJ,welding.pauseC,5500);
+		welding.pause = false;
+	}
 	if (IsCutting && robotType == CoordRobot)
 	{
 		Joint j;
@@ -506,7 +512,9 @@ else if (cmd == "D7")
 		}
 		cout << "改变姿态" << endl;
 		writefile << "改变姿态" << endl;
+		isChange = true;
 		moto_runJAbs(j, c, 4000);
+		isChange = false;
 		cout << "改变姿态完成" << endl;
 		writefile << "改变姿态完成" << endl;
 		moto_XYZclear();//XYZ数据清零
@@ -546,6 +554,11 @@ else if (cmd == "DH")
 {
 	cout << "后退指令" << endl;
 	writefile << "后退指令" << endl;
+	if(welding.pause)
+	{
+		moto_runJAbs(welding.pauseJ,welding.pauseC,5500);
+		welding.pause = false;
+	}
 	welding.backruning = true;
 	return;
 }

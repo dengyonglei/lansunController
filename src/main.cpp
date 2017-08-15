@@ -78,7 +78,7 @@ void *thread_function2(void *arg);
 int main()
 {
 
-	version = "V2017 07 31 -1111";	//版本号需要自己设定
+	version = "V2017 08 15";	//版本号需要自己设定
 	ofstream writefile("write.txt");
 	// 初始化系统信息
 	initSystemState();
@@ -383,13 +383,12 @@ void *thread_function2(void *arg)
 		//回零完成才上传给上位机坐标
 		if (parser.back_finished)
 		{
-			if (!parser.welding.runing || udp::IsOpenUdp)   //不在焊接过程中是不执行坐标的
+			if(!(parser.welding.runing  || parser.welding.backruning || parser.isChange))
 			{
 				parser.coord.run();   //上传坐标参数
 				if(!parser.IsSend )
 				count += 2;          //说明是两秒钟
 			}
-
 		}
 		if(parser.IsSendIOdata)
 		parser.ioparameter.run();   //上传IO口数据
@@ -408,6 +407,7 @@ void *thread_function2(void *arg)
 				if(!Variable::IsStop)
 				{
 					Variable::IsStop = true;
+
 				  IOM->DATA=0xFFFFFFFF;
 				  cout <<"心跳中断   运动停止" << endl;
 				}

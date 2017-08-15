@@ -142,6 +142,8 @@ void Welding::move()
 				runing = false;
 				cout << "graphInex: " << graphInex << "  interpolationIndex: "
 						<< interpolationIndex << endl;
+				DylCommon::getCurrentPosition(pauseJ,pauseC);
+				pause = true;
 				return;
 			}
             if(currentSpeed != lastSpeed)
@@ -246,7 +248,6 @@ void Welding::move()
 		DylCommon::protocol_send("DC,3");
 		moveFinished = true;
 		cout << "焊接完成" << endl;
-
 	}
 	runing = false;
 	out << "***********************速度测试完成*************************" << endl;
@@ -525,6 +526,7 @@ void Welding::init()                          //初始化函数
 	IsFireLinecPause = false;
 	IsModeChangeArcStrick = false;
 	lastJIsinit = false;
+	pause = false;
 }
 
 void Welding::back()
@@ -602,6 +604,7 @@ void Welding::back()
 					graphInex = graph[i].Index - 1;
 					backruning = false;
 					return;
+
 				}
 				cout << graph[i].num << "线段逆向快速移动完成" << endl;
 				break;
@@ -614,6 +617,8 @@ void Welding::back()
 				Variable::IsStop = false;
 				backruning = false;
 				IsFireLinecPause = true;
+				DylCommon::getCurrentPosition(pauseJ,pauseC);
+				pause = true;
 				return;
 			}
 			moto_runInterpolationAbs((iter->mj).j, (iter->mj).c, currentSpeed);

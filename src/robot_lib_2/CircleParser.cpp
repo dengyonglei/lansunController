@@ -99,10 +99,12 @@ int CircleParser::isSplitArc(const ArrayXd& p1,const ArrayXd& p2,const ArrayXd& 
 		   p4[0] = x;
 		   p4[1] = y;
 		   p4[2] = z;
+		   cout << "中点1：" << x << "  " << y << "  " << z << endl;
 		   getMidPoint(x0,y0,z0,r,x2,y2,z2,x3,y3,z3,x,y,z);
 		   p5[0] = x;
 		   p5[1] = y;
 		   p5[2] = z;
+		   cout << "中点2：" << x << " " << y << " " << z << endl;
 		   return 2;
        }
 }

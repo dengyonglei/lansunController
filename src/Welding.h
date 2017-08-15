@@ -57,7 +57,9 @@ public:
 	void init();
 	void back();  //ºóÍË
 	double lastSpeed;
-
+    bool pause;
+    Joint pauseJ;
+    Coint pauseC;
 };
 
 #endif /* SRC_WELDING_H_ */

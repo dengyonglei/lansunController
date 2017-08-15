@@ -33,9 +33,10 @@ public:
 	bool  back_finished;
 	bool  IsConnnect;
 	bool  IsSendIOdata;
-
+    bool  isChange;
 private:
 	bool runing;//标志位
+
 	//数据接收
     void Datereceive();
     //校验函数

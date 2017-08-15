@@ -16,5 +16,5 @@ bool Variable::BigArmDirectionChange = false;
 bool Variable::SmallArmDirectionChange = false;
 bool Variable::UpDownAxisDirectionChange = false;       //旋转轴方向改变
 bool Variable::Islimit = false;
-
+bool Variable::IsAxisStop = false;
 

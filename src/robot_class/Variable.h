@@ -20,6 +20,7 @@ public:
 	static bool SmallArmDirectionChange;
 	static bool UpDownAxisDirectionChange;       //旋转轴方向改变
 	static bool Islimit;                        //是否在限位位置
+	static bool IsAxisStop;
 
 };
 

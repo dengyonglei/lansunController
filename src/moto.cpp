@@ -212,7 +212,7 @@ void moto_runJ(Joint j, Coint c,double speed)
 
 	while(MOT->field.D3 == 'N')
 	{
-		 if(Variable::IsStop)   //如果接收到停止指令就让他停下来
+		 if(Variable::IsStop || Variable::IsAxisStop)   //如果接收到停止指令就让他停下来
 		 {
 //			 cout<<"减速"<<endl;
 		  i = i - 5;
@@ -221,6 +221,7 @@ void moto_runJ(Joint j, Coint c,double speed)
 			cout<<"轴移动暂停"<<endl;
 			robot_stop();
 			Variable::IsStop = false;
+			Variable::IsAxisStop = false;
 			break;
 		  }
 		 }

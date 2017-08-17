@@ -64,5 +64,5 @@ void Coordinates::run()
     if(udp::IsOpenUdp)
     usleep(50000);     //两秒钟回传一次
     else
-    usleep(200000);
+    usleep(400000);
 }

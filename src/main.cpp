@@ -78,7 +78,7 @@ void *thread_function2(void *arg);
 int main()
 {
 
-	version = "V2017 08 15";	//版本号需要自己设定
+	version = "V2017 08 17";	//版本号需要自己设定
 	ofstream writefile("write.txt");
 	// 初始化系统信息
 	initSystemState();
@@ -91,6 +91,7 @@ int main()
 			      0, 1, 0, 0,
 			      0, 0, 1, 0,
 			      0, 0, 0, 1;
+
 	if(udp::IsOpenUdp)
 		{
 			if(robotType == CoordRobot)
@@ -387,7 +388,7 @@ void *thread_function2(void *arg)
 			{
 				parser.coord.run();   //上传坐标参数
 				if(!parser.IsSend )
-				count += 2;          //说明是两秒钟
+				count += 4;          //说明是两秒钟
 			}
 		}
 		if(parser.IsSendIOdata)

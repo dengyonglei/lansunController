@@ -92,7 +92,7 @@ void RoctorBar::setData(AxisType axistype, double speed) {
 		if (speed == 0) {
 			cout << "ÊÕµ½0" << endl;
 			Variable::IsStop = true;
-			Variable::IsAxisStop = true;
+			cout << Variable::IsStop <<endl;
 		}
 	}
 }

@@ -212,16 +212,16 @@ void moto_runJ(Joint j, Coint c,double speed)
 
 	while(MOT->field.D3 == 'N')
 	{
-		 if(Variable::IsStop || Variable::IsAxisStop)   //如果接收到停止指令就让他停下来
+		 if(Variable::IsStop)   //如果接收到停止指令就让他停下来
 		 {
-//			 cout<<"减速"<<endl;
+//		  cout<<"减速"<<endl;
 		  i = i - 5;
-		  if(i < 1)
+		  cout << "减速: " << i << endl;
+		  if(i < 100)
 		  {
 			cout<<"轴移动暂停"<<endl;
 			robot_stop();
 			Variable::IsStop = false;
-			Variable::IsAxisStop = false;
 			break;
 		  }
 		 }
@@ -272,18 +272,6 @@ void moto_runJ(Joint j, Coint c,double speed)
 			}
 		}
 		delay1ms();     //延时1s,让其全部完成为止
-	 if(Variable::IsStop)   //如果接收到停止指令就让他停下来
-			 {
-	//			 cout<<"减速"<<endl;
-			  i = i - 5;
-			  if(i < 1)
-			  {
-				cout<<"轴移动暂停"<<endl;
-				robot_stop();
-				Variable::IsStop = false;
-				break;
-			  }
-	}
 	}
 	robot_stop();
 }
@@ -945,7 +933,7 @@ void robot_stop(void)
 	MOT->J8step = 0;
 	MOT->contia = 0;
 	MOT->Tt = 0xFFFF;
-    usleep(100000);
+    usleep(50000);
 	MOT->field.D3 = 'R';
 }
 

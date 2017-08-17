@@ -398,14 +398,14 @@ void *thread_function2(void *arg)
 		usleep(100000);
 		if(!parser.IsSend)
 		count ++;
-		if(count >= 50)  //5s之后检测是否是连接的状态
+		if(count >= 70)  //5s之后检测是否是连接的状态
 		{
 			pthread_mutex_lock (&mutex);
 			if(parser.IsConnnect)  //表示处于连接状态
 				parser.IsConnnect = false;
 			else
 			{
-				if(!Variable::IsStop)
+				if(!Variable::IsStop && (parser.welding.runing || parser.welding.backruning))
 				{
 					Variable::IsStop = true;
 

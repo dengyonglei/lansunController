@@ -15,10 +15,36 @@ Welding::Welding() :runing(false), rate(1), IsFireMode(false)
 {
 	init();
 	lastSpeed = 0;
+	changerpw = false ; //改变姿态
 }
 Welding::~Welding()
 {
 
+}
+
+void Welding::changeRPW()
+{
+     if(!changerpw)
+    	 return;
+     cout << "改变姿态" << endl;
+     moto_runJAbs(changeJ, changeC, 4000);
+	 cout << "改变姿态完成" << endl;
+	 moto_XYZclear();//XYZ数据清零
+     usleep(1000);
+     if(!Variable::IsStop)
+     {
+     changerpw = false;
+     runing = true;
+     }
+}
+void Welding::backPos()
+{
+if(pause)
+{
+moto_runJAbs(pauseJ,pauseC,5000);
+if(!Variable::IsStop)
+pause = false;
+}
 }
 //运行函数开始运动函数
 void Welding::move()
@@ -527,6 +553,7 @@ void Welding::init()                          //初始化函数
 	IsModeChangeArcStrick = false;
 	lastJIsinit = false;
 	pause = false;
+
 }
 
 void Welding::back()
@@ -687,4 +714,9 @@ void Welding::run()
 		move();
 	if (backruning)
 		back();
+	if(pause)
+		backPos();
+	if(changerpw)
+		changeRPW();
+
 }

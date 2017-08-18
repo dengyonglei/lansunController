@@ -52,7 +52,7 @@ void Coordinates::getPosition()
 	if(udp::IsOpenUdp)   //开启udp模式才回传坐标值
 	{
 		char jdata[1000];
-		sprintf(jdata,"UC,16,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f",xyzrpw[0],xyzrpw[1],xyzrpw[2],xyzrpw[3],xyzrpw[4],xyzrpw[5],curJ.j1,curJ.j2,curJ.j3,curJ.j4,curJ.j5,curJ.j6,curC.c1,curC.c2);
+		sprintf(jdata,"UC,16,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f",xyzrpw[0],xyzrpw[1],xyzrpw[2],xyzrpw[3],xyzrpw[4],xyzrpw[5],curJ.j1,curJ.j2,curJ.j3,curJ.j4,curJ.j5,curJ.j6,curC.c1,curC.c2);
 		string strJData(jdata);
 		udp::sendProgramData(strJData);
 	}

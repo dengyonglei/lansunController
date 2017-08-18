@@ -56,10 +56,15 @@ public:
 	bool getInterpolations();                          //得到插补点
 	void init();
 	void back();  //后退
+	void changeRPW();
+	void backPos();
 	double lastSpeed;
     bool pause;
     Joint pauseJ;
     Coint pauseC;
+    Joint changeJ;
+    Coint changeC;
+    bool changerpw; //改变姿态
 };
 
 #endif /* SRC_WELDING_H_ */

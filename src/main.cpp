@@ -384,7 +384,7 @@ void *thread_function2(void *arg)
 		//回零完成才上传给上位机坐标
 		if (parser.back_finished)
 		{
-			if(!(parser.welding.runing  || parser.welding.backruning || parser.isChange))
+			if(!(parser.welding.runing  || parser.welding.backruning))
 			{
 				parser.coord.run();   //上传坐标参数
 				if(!parser.IsSend )

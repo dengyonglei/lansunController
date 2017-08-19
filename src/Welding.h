@@ -62,9 +62,6 @@ public:
     bool pause;
     Joint pauseJ;
     Coint pauseC;
-    Joint changeJ;
-    Coint changeC;
-    bool changerpw; //¸Ä±ä×ËÌ¬
 };
 
 #endif /* SRC_WELDING_H_ */

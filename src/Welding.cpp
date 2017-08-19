@@ -15,36 +15,10 @@ Welding::Welding() :runing(false), rate(1), IsFireMode(false)
 {
 	init();
 	lastSpeed = 0;
-	changerpw = false ; //改变姿态
 }
 Welding::~Welding()
 {
 
-}
-
-void Welding::changeRPW()
-{
-     if(!changerpw)
-    	 return;
-     cout << "改变姿态" << endl;
-     moto_runJAbs(changeJ, changeC, 4000);
-	 cout << "改变姿态完成" << endl;
-	 moto_XYZclear();//XYZ数据清零
-     usleep(1000);
-     if(!Variable::IsStop)
-     {
-     changerpw = false;
-     runing = true;
-     }
-}
-void Welding::backPos()
-{
-if(pause)
-{
-moto_runJAbs(pauseJ,pauseC,5000);
-if(!Variable::IsStop)
-pause = false;
-}
 }
 //运行函数开始运动函数
 void Welding::move()
@@ -53,7 +27,7 @@ void Welding::move()
 		return;
 	ofstream out("time.txt");
 	out << "***********************速度测试***************************\n" ;
-	double minSpeed = 200;          //最小速度
+	double minSpeed = 20;          //最小速度
 	double currentSpeed = minSpeed; //当前速度
 	double speed;                   //目前速度
 	bool arcStrickStatic = false;   //目前焊接状态，是否起了弧
@@ -78,7 +52,7 @@ void Welding::move()
 		memset(&stop1,0,sizeof(timeval));
 		memset(&diff1,0,sizeof(timeval));
 		gettimeofday(&start1,0);
-		double acctimes = 100;          //加速次数
+		double acctimes = 200;          //加速次数
 		double dectimes = 100;	        //减速次数
 		speed = graph[i].speed;   //获取当前速度
 		acctimes = dectimes = 50 * (speed / 1000.0) * rate;   //获取加减速步数
@@ -129,6 +103,7 @@ void Welding::move()
 		out << "*********************" << graph[i].Index << "线运动引号*******************************" << endl;
 	    out << "*********" <<"类型： " << graph[i].type << " 插补数:  " << graph[i].interpolationPointsIndexs.size() <<"   *********"<<endl;
 		DylCommon::protocol_send(str);
+		cout << str << endl;
 		for (; iter != abcdef.end(); iter++)
 		{
 			//表明是第一条
@@ -144,6 +119,7 @@ void Welding::move()
 				cout << graph[i].num << "线段快速移动" << endl;
 				out << graph[i].num << "线段快速移动" << endl;
 				moto_runJAbs((iter->mj).j, (iter->mj).c, 5000);
+				usleep(1000);
 				if (Variable::IsStop) //暂停
 				{
 					Variable::IsStop = false;
@@ -287,6 +263,7 @@ bool Welding::arcStrick(int currentLineNum, double arcStrictime)
 	char str[100];
 	sprintf(str, "DE,4,%d", currentLineNum);
 	DylCommon::protocol_send(str);
+	cout << str << endl;
 	sleep(arcStrictime);
 	IOM->DATA = ARCSTRICK;
 	return true;
@@ -299,6 +276,7 @@ void Welding::arcQuench(int currentLineNum)
 	char str[100];
 	sprintf(str, "DE,4,%d", currentLineNum);
 	DylCommon::protocol_send(str);
+	cout << str << endl;
 	IOM->DATA = ARCQUENCH;       //熄弧
 }
 
@@ -714,9 +692,4 @@ void Welding::run()
 		move();
 	if (backruning)
 		back();
-	if(pause)
-		backPos();
-	if(changerpw)
-		changeRPW();
-
 }

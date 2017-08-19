@@ -453,14 +453,14 @@ else if (cmd == "D2")
 	cout << "起弧行弧指令" << endl;
 	writefile << "起弧行弧指令" << endl;
 	//把起弧行弧参数设置进去   延时和标号的作用
-	welding.receiveArcStrickData(parserdata[1],parserdata[6]);
+	welding.receiveArcStrickData(parserdata[1],parserdata[7]);
 	return;
 }
 else if (cmd == "D3")
 {
 	cout << "熄弧指令" << endl;
 	writefile << "熄弧指令" << endl;
-	welding.receiveArcQuenchData(parserdata[3]);
+	welding.receiveArcQuenchData(parserdata[4]);
 	return;
 }
 else if (cmd == "D4")    //开始下传的指令
@@ -491,7 +491,7 @@ else if (cmd == "D7")
 	writefile << "开始焊接" << endl;
 	if(welding.pause)
 	{
-		moto_runJAbs(welding.pauseJ,welding.pauseC,5500);
+		moto_runJAbs(welding.pauseJ,welding.pauseC,5000);
 		welding.pause = false;
 	}
 	if (IsCutting && robotType == CoordRobot)
@@ -556,7 +556,7 @@ else if (cmd == "DH")
 	writefile << "后退指令" << endl;
 	if(welding.pause)
 	{
-		moto_runJAbs(welding.pauseJ,welding.pauseC,5500);
+		moto_runJAbs(welding.pauseJ,welding.pauseC,5000);
 		welding.pause = false;
 	}
 	welding.backruning = true;

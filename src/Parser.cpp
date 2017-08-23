@@ -562,6 +562,15 @@ else if (cmd == "DH")
 	welding.backruning = true;
 	return;
 }
+
+else if(cmd == "DI")
+{
+	if (parserdata[1] == 0)
+		welding.laseropen = false;
+	else
+		welding.laseropen = true;
+	 welding.laserDistance = parserdata[2];
+}
 /***************F系列指令解析***********************/
 else if (cmd == "F0")
 {
@@ -577,7 +586,8 @@ else if (cmd == "F5")
 	writefile << "系统恢复指令" << endl;
 	DylCommon::protocol_send("F5,3");
 	return;
-} else if (cmd == "F7")
+}
+else if (cmd == "F7")
 {
 	cout << "版本号显示指令" << endl;
 	writefile << "版本号显示指令" << endl;

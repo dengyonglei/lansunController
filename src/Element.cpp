@@ -81,7 +81,7 @@ bool Element::checkInterpolations(list<MJCoint> abcdef)
 		(*iter).j = NewPositionJointssolution((*iter).m,lastJ);
 		lastJ = (*iter).j;
 		i++;
-		if ((!(*iter).j.ISOK))
+		if (robotType == JointRobot && (!(*iter).j.ISOK) )
 		{
 			throw MobileTransfinite;  //抛出移动超限的异常
 			return false;

@@ -112,8 +112,8 @@ int main()
 			}
 	RESOLUTION = 10; 	//表示离散精度为0.1mm
 	RESOLUTION_ATT = 50;  //表示姿态离散精度为1/30
-	  float JAAA_min[6] = {-17000000.0, -17000000.0, -5000, -3600.0 / 180 * pi, -3600.0 / 180 * pi, -3600.0 / 180 * pi};
-	  float JAAA_max[6] = { 17000000.0,  17000000.0,   5000,  3600.0 / 180 * pi, 3600.0 / 180 * pi,  3600.0 / 180 * pi};
+	  float JAAA_min[6] = {-17000000.0, -17000000.0, -50000, -3600.0 / 180 * pi, -3600.0 / 180 * pi, -3600.0 / 180 * pi};
+	  float JAAA_max[6] = { 17000000.0,  17000000.0,   50000,  3600.0 / 180 * pi, 3600.0 / 180 * pi,  3600.0 / 180 * pi};
 	for(int i = 0; i < 6; i++)
 	{
 		 JA_min[i] = JAAA_min[i];
@@ -377,7 +377,6 @@ void *thread_function1(void *arg)
 //此线程就一直给上位机回传坐标
 void *thread_function2(void *arg)
 {
-
     double count = 0;
 	while (1)
 	{

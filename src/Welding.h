@@ -62,6 +62,8 @@ public:
     bool pause;
     Joint pauseJ;
     Coint pauseC;
+    double laserDistance;
+    bool laseropen;
 };
 
 #endif /* SRC_WELDING_H_ */

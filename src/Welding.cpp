@@ -15,6 +15,8 @@ Welding::Welding() :runing(false), rate(1), IsFireMode(false)
 {
 	init();
 	lastSpeed = 0;
+	laserDistance = 0;
+	laseropen = false;
 }
 Welding::~Welding()
 {
@@ -31,6 +33,7 @@ void Welding::move()
 	double currentSpeed = minSpeed; //当前速度
 	double speed;                   //目前速度
 	bool arcStrickStatic = false;   //目前焊接状态，是否起了弧
+	bool laserIsOpen = false;
 	//开始运动
 	if (moveFinished)
 	{
@@ -103,7 +106,6 @@ void Welding::move()
 		out << "*********************" << graph[i].Index << "线运动引号*******************************" << endl;
 	    out << "*********" <<"类型： " << graph[i].type << " 插补数:  " << graph[i].interpolationPointsIndexs.size() <<"   *********"<<endl;
 		DylCommon::protocol_send(str);
-		cout << str << endl;
 		for (; iter != abcdef.end(); iter++)
 		{
 			//表明是第一条
@@ -153,6 +155,18 @@ void Welding::move()
             	cout << "speed: " << currentSpeed << endl;
             	lastSpeed = currentSpeed;
             }
+        	if(laseropen && graph[i].type == FireLine && arcStrickStatic && !laserIsOpen && linesize - runtaskNum > (laserDistance * 10))  //如果是焊接直线
+			{
+				cout << "激光开" << endl;
+				IOM->DATA = 0xffffffe0;    //激光跟踪开
+				laserIsOpen = true;
+			}
+        	if(laserIsOpen && linesize - runtaskNum < laserDistance * 10 )
+			{
+				cout << "激光关" << endl;
+				IOM->DATA = ARCSTRICK;
+				laserIsOpen = false;
+			}
 			moto_runInterpolationAbs((iter->mj).j, (iter->mj).c, currentSpeed);
 			out <<  "传入速度：" << currentSpeed << "     ";
 			runtaskNum++;

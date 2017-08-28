@@ -29,11 +29,11 @@ void Welding::move()
 		return;
 	ofstream out("time.txt");
 	out << "***********************速度测试***************************\n" ;
-	double minSpeed = 20;          //最小速度
+	double minSpeed = 200;          //最小速度
 	double currentSpeed = minSpeed; //当前速度
 	double speed;                   //目前速度
 	bool arcStrickStatic = false;   //目前焊接状态，是否起了弧
-	bool laserIsOpen = false;
+//	bool laserIsOpen = false;
 	//开始运动
 	if (moveFinished)
 	{
@@ -155,18 +155,18 @@ void Welding::move()
             	cout << "speed: " << currentSpeed << endl;
             	lastSpeed = currentSpeed;
             }
-        	if(laseropen && graph[i].type == FireLine && arcStrickStatic && !laserIsOpen && linesize - runtaskNum > (laserDistance * 10))  //如果是焊接直线
-			{
-				cout << "激光开" << endl;
-				IOM->DATA = 0xffffffe0;    //激光跟踪开
-				laserIsOpen = true;
-			}
-        	if(laserIsOpen && linesize - runtaskNum < laserDistance * 10 )
-			{
-				cout << "激光关" << endl;
-				IOM->DATA = ARCSTRICK;
-				laserIsOpen = false;
-			}
+//        	if(laseropen && graph[i].type == FireLine && arcStrickStatic && !laserIsOpen && linesize - runtaskNum > (laserDistance * 10))  //如果是焊接直线
+//			{
+//				cout << "激光开" << endl;
+//				IOM->DATA = 0xffffffe0;    //激光跟踪开
+//				laserIsOpen = true;
+//			}
+//        	if(laserIsOpen && linesize - runtaskNum < laserDistance * 10 )
+//			{
+//				cout << "激光关" << endl;
+//				IOM->DATA = ARCSTRICK;
+//				laserIsOpen = false;
+//			}
 			moto_runInterpolationAbs((iter->mj).j, (iter->mj).c, currentSpeed);
 			out <<  "传入速度：" << currentSpeed << "     ";
 			runtaskNum++;

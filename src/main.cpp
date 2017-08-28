@@ -78,7 +78,7 @@ void *thread_function2(void *arg);
 int main()
 {
 
-	version = "V2017 08 17";	//版本号需要自己设定
+	version = "V2017 08 23";	//版本号需要自己设定
 	ofstream writefile("write.txt");
 	// 初始化系统信息
 	initSystemState();
@@ -383,7 +383,7 @@ void *thread_function2(void *arg)
 		//回零完成才上传给上位机坐标
 		if (parser.back_finished)
 		{
-			if(!(parser.welding.runing  || parser.welding.backruning))
+			if(udp::IsOpenUdp || (!(parser.welding.runing  || parser.welding.backruning)) )
 			{
 				parser.coord.run();   //上传坐标参数
 				if(!parser.IsSend )

@@ -106,7 +106,7 @@ void RoctorBar::RoctorMove()
 	Coint currentC;
 	DylCommon::getCurrentPosition(currentJ,currentC);   //得到当前的坐标值
 	targetC = currentC;   //赋值给当前targrt，这个时候是不会走的
-	double ss = 1000.0;
+	double ss = 10000.0;
 //保证不卡可以停
 //测出摇杆最大速度     x y z 定点摆 定点转   到50%左右
 	int ADDTIM1 = 1;
@@ -138,7 +138,7 @@ void RoctorBar::RoctorMove()
 		lastA << 0, FixedPointSwingSpeed / ss, FixedPointRotationSpeed / ss;
 		Matrix4d new_robot_position = transl(lastV) * fksolution(currentJ);
 		ArrayXd xyzrpw(6);
-		usleep(100);
+		usleep(10);
 		xyzrpw = pose_2_xyzrpw(new_robot_position);
 		xyzrpw[3] += lastA(0);
 		xyzrpw[4] += lastA(1);

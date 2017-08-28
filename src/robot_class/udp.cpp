@@ -10,7 +10,7 @@
 
 #include <sys/socket.h>
 #include <arpa/inet.h>
- string udp::udpAddress = "192.168.1.104";
+ string udp::udpAddress = "192.168.1.112";
  int  udp::udpsocket = 0;              //套接字
  int  udp::addr_len = sizeof(sockaddr_in);  //长度
  bool udp::IsOpenUdp = false;       //是否打开udp通信
@@ -20,7 +20,6 @@ udp::udp()
 {
   // TODO Auto-generated constructor stub
 }
-
 udp::~udp()
 {
 	// TODO Auto-generated destructor stub

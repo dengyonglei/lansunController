@@ -29,7 +29,7 @@ void Welding::move()
 		return;
 	ofstream out("time.txt");
 	out << "***********************速度测试***************************\n" ;
-	double minSpeed = 200;          //最小速度
+	double minSpeed = 250;          //最小速度
 	double currentSpeed = minSpeed; //当前速度
 	double speed;                   //目前速度
 	bool arcStrickStatic = false;   //目前焊接状态，是否起了弧

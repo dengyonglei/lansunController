@@ -78,6 +78,7 @@ void *thread_function2(void *arg);
 int main()
 {
 
+
 	version = "V2017 09 11";	//版本号需要自己设定
 	ofstream writefile("write.txt");
 	// 初始化系统信息

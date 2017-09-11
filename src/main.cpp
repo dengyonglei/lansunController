@@ -63,8 +63,7 @@ void splitStr(char *s, list<string> &strArray);
 //数据拼接
 void joinStr(vector<string>& strArray);
 int server_sockfd;
-//得到数据并解析
-
+//得到数据并解
 
 
 void getDateParser();

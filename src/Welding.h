@@ -23,7 +23,7 @@ public:
 	bool runing;
 	bool backruning;
 private:
-	bool arcStrick(int currentLineNum, double arcStrictime);
+	bool arcStrick(int currentLineNum, double arcStrictime,double arcVoltage);
 	void arcQuench(int currentLineNum);  //运行过程中熄弧
 
 public:
@@ -51,7 +51,7 @@ public:
 	//圆接收数据
 	void receiveCirclePoints(const ArrayXd &p1, const Coint& c1,const ArrayXd &p2, const Coint& c2, const ArrayXd &p3, const Coint& c3,double speed, int num);
 	void receiveLinerSwingWeldingPoints(const ArrayXd &p1,const ArrayXd &p2,const ArrayXd &p3,const ArrayXd &p4,double speed,int num);
-	void receiveArcStrickData(double delay, int num);   //接收起弧数据
+	void receiveArcStrickData(double delay,double arcVoltage, int num);   //接收起弧数据
 	void receiveArcQuenchData(int num);                //接收熄弧数据
 	bool getInterpolations();                          //得到插补点
 	void init();

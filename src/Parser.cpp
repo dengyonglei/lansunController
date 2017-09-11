@@ -109,18 +109,26 @@ else if (cmd == "E1")
 	torchcalibration.setData(pointtype);
 	return;
 } else if (cmd == "E5") {
-	int h = 1;
+	double x =  parserdata[4];
+	double y =  parserdata[8];
+	double z =  parserdata[12];
 	Matrix4d mat = Matrix4d::Zero();
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
-			double s = parserdata[h++];
-			if (finite(s) == 0)   //如果传入的值为非数值，则返回出去
-			{
-				return;
-			}
-			mat(i, j) = s;
-		}
-	}
+//	for (int i = 0; i < 4; i++) {
+//		for (int j = 0; j < 4; j++) {
+//			double s = parserdata[h++];
+//			if (finite(s) == 0)   //如果传入的值为非数值，则返回出去
+//			{
+//				return;
+//			}
+//			mat(i, j) = s;
+//		}
+//	}
+	//tcf测试矩阵
+		mat <<    1, 0, 0,  x,
+				  0, 1, 0,  y,
+				  0, 0, 1,  z,
+				  0, 0, 0,  1;
+	cout << mat << endl;
 	cout << "TCF矩阵下传" << endl;
 	//tcf测试屏蔽
 	torchcalibration.setData(mat);
@@ -192,8 +200,7 @@ else if(cmd == "EC") {
 			mat(i, j) = s;
 		}
 	}
-	cout << "POS矩阵下传" << endl;
-	//tcf测试矩阵
+
 	modifiedGearDemarcate.setData(mat);
 }
 
@@ -453,7 +460,7 @@ else if (cmd == "D2")
 	cout << "起弧行弧指令" << endl;
 	writefile << "起弧行弧指令" << endl;
 	//把起弧行弧参数设置进去   延时和标号的作用
-	welding.receiveArcStrickData(parserdata[1],parserdata[7]);
+	welding.receiveArcStrickData(parserdata[1],parserdata[6],parserdata[7]);
 	return;
 }
 else if (cmd == "D3")

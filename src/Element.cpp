@@ -40,6 +40,8 @@ Element::~Element()
 //直线插补
 bool Element::getLineInterpolations()
 {
+
+
 	list<MJCoint> abcdef = RobotAndCHPositionAttitudeLinearInterpolation(startC,endC,xyzrpw_2_pose(startXyzrpw),xyzrpw_2_pose(endXyzrpw));
 	    if(checkInterpolations(abcdef))  //校验正确
 	    {
@@ -76,6 +78,8 @@ bool Element::checkInterpolations(list<MJCoint> abcdef)
        lastJ = NewPositionJointssolution((*iter).m);
 	   lastJIsinit = true;
     }
+
+
 	for (; iter != abcdef.end();iter++)
 	{
 		(*iter).j = NewPositionJointssolution((*iter).m,lastJ);

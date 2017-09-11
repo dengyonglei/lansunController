@@ -36,6 +36,9 @@ void ModifiedGearDemarcate::setData(const Matrix4d &pos) {
 	POSITIONER(0, 3) = pos(0, 3);
 	POSITIONER(1, 3) = pos(1, 3);
 	POSITIONER(2, 3) = pos(2, 3);
+//	POSITIONER = pos;
+	cout << "接收的pos矩阵" << endl;
+	cout << POSITIONER << endl;
 }
 //通过标定6点获取POS
 //Matrix4d getPOSMatrix4d(Matrix4d Moe1, Matrix4d Moe2, Matrix4d Moe3, Matrix4d Moe4, Matrix4d Moe5, Matrix4d Moe6);

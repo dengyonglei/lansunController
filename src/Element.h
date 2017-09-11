@@ -29,6 +29,7 @@ struct arcStrickObject     //起弧类
 {
 
 	double arcStricDelay;   //起弧延时有时候不需要延时
+	double arcVoltage;
 	int num; //序号数
 };
 struct arcQuenchObject    //熄弧类

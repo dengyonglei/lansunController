@@ -91,7 +91,7 @@ void Welding::move()
 		{
 			if(IsFireLinecPause || IsModeChangeArcStrick)
 			{
-				arcStrick(lastArcStrickObject.num, lastArcStrickObject.arcStricDelay);                //开始起弧
+				arcStrick(lastArcStrickObject.num, lastArcStrickObject.arcStricDelay,lastArcStrickObject.arcVoltage);                //开始起弧
 				arcStrickStatic = true;  //更新焊接状态
 				if(IsFireLinecPause)
 				IsFireLinecPause = false;
@@ -120,7 +120,7 @@ void Welding::move()
 				iter--;
 				cout << graph[i].num << "线段快速移动" << endl;
 				out << graph[i].num << "线段快速移动" << endl;
-				moto_runJAbs((iter->mj).j, (iter->mj).c, 5000);
+				moto_runJAbs((iter->mj).j, (iter->mj).c, 4000);
 				usleep(1000);
 				if (Variable::IsStop) //暂停
 				{
@@ -155,18 +155,6 @@ void Welding::move()
             	cout << "speed: " << currentSpeed << endl;
             	lastSpeed = currentSpeed;
             }
-//        	if(laseropen && graph[i].type == FireLine && arcStrickStatic && !laserIsOpen && linesize - runtaskNum > (laserDistance * 10))  //如果是焊接直线
-//			{
-//				cout << "激光开" << endl;
-//				IOM->DATA = 0xffffffe0;    //激光跟踪开
-//				laserIsOpen = true;
-//			}
-//        	if(laserIsOpen && linesize - runtaskNum < laserDistance * 10 )
-//			{
-//				cout << "激光关" << endl;
-//				IOM->DATA = ARCSTRICK;
-//				laserIsOpen = false;
-//			}
 			moto_runInterpolationAbs((iter->mj).j, (iter->mj).c, currentSpeed);
 			out <<  "传入速度：" << currentSpeed << "     ";
 			runtaskNum++;
@@ -218,7 +206,7 @@ void Welding::move()
 				{
 					arcStrickObject obj = graph[i].arcStrickObj;          //获得起弧信息
 					lastArcStrickObject = obj;
-					arcStrick(obj.num, obj.arcStricDelay);                //开始起弧
+					arcStrick(obj.num, obj.arcStricDelay,obj.arcVoltage); //开始起弧
 					arcStrickStatic = true;                              //更新焊接状态
 				}
 
@@ -271,8 +259,10 @@ void Welding::move()
 }
 
 //开始起弧，工艺性要做一下
-bool Welding::arcStrick(int currentLineNum, double arcStrictime)
+bool Welding::arcStrick(int currentLineNum, double arcStrictime,double arcVoltage)
 {
+	AVO->field.ch = 0;
+	AVO->field.data = arcVoltage * 0x3ff / 10.0;
 	cout << "起弧号: " << currentLineNum << "  起弧时间：" << arcStrictime << endl;
 	char str[100];
 	sprintf(str, "DE,4,%d", currentLineNum);
@@ -292,6 +282,7 @@ void Welding::arcQuench(int currentLineNum)
 	DylCommon::protocol_send(str);
 	cout << str << endl;
 	IOM->DATA = ARCQUENCH;       //熄弧
+	AVO->field.data = 0;
 }
 
 void Welding::stopStaticChange()
@@ -516,9 +507,10 @@ bool Welding::getInterpolations()     //得到插补点失败就解析中断
 	return true;
 }
 
-void Welding::receiveArcStrickData(double delay, int num)  //接收起弧数据
+void Welding::receiveArcStrickData(double delay, double arcVoltage,int num)  //接收起弧数据
 {
 	arcStrickObject obj;                       //起弧类
+	obj.arcVoltage = arcVoltage;               //起弧电压
 	obj.arcStricDelay = delay;                 //起弧延时
 	obj.num = num;                             //起弧号
 	graph[graph.size() - 1].IsArcStric = true;
@@ -545,7 +537,6 @@ void Welding::init()                          //初始化函数
 	IsModeChangeArcStrick = false;
 	lastJIsinit = false;
 	pause = false;
-
 }
 
 void Welding::back()
